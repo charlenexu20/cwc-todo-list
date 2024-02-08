@@ -6,9 +6,21 @@ import {
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+
+// Data validation
+const isInvalidEmail = (email: string) => {
+  const emailFormat = /\S+@\S+\.\S+/;
+  if (email.match(emailFormat)) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -16,13 +28,15 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [show, setShow] = useState(false);
+
   const [submitClickedName, setSubmitClickedName] = useState(false);
   const [submitClickedEmail, setSubmitClickedEmail] = useState(false);
   const [submitClickedUsername, setSubmitClickedUsername] = useState(false);
   const [submitClickedPassword, setSubmitClickedPassword] = useState(false);
 
   const isErrorName = name === "" && submitClickedName;
-  const isErrorEmail = email === "" && submitClickedEmail;
+  const isErrorEmail = isInvalidEmail(email) && submitClickedEmail;
   const isErrorUsername = username === "" && submitClickedUsername;
   const isErrorPassword = password === "" && submitClickedPassword;
 
@@ -50,14 +64,23 @@ const SignUp = () => {
     setPassword(value);
   };
 
+  const handleShowClick = (e: any) => {
+    setShow(!show);
+  };
+
   const handleSubmit = () => {
     setSubmitClickedName(true);
     setSubmitClickedEmail(true);
     setSubmitClickedUsername(true);
     setSubmitClickedPassword(true);
 
-    if (name === "" || email === "" || username === "" || password === "") {
-      console.log("ERRORS");
+    if (
+      name === "" ||
+      isInvalidEmail(email) ||
+      username === "" ||
+      password === ""
+    ) {
+      return;
     } else {
       axios
         .post("http://localhost:3001/auth/sign-up", {
@@ -98,6 +121,7 @@ const SignUp = () => {
             <FormErrorMessage>Please enter your full name.</FormErrorMessage>
           )}
         </FormControl>
+
         <FormControl isInvalid={isErrorEmail} isRequired>
           <FormLabel>Email</FormLabel>
           <Input type="email" value={email} onChange={handleEmailChange} />
@@ -107,6 +131,7 @@ const SignUp = () => {
             </FormErrorMessage>
           )}
         </FormControl>
+
         <FormControl isInvalid={isErrorUsername} isRequired>
           <FormLabel>Username</FormLabel>
           <Input type="text" value={username} onChange={handleUsernameChange} />
@@ -114,13 +139,27 @@ const SignUp = () => {
             <FormErrorMessage>Please enter a username.</FormErrorMessage>
           )}
         </FormControl>
+
         <FormControl isInvalid={isErrorPassword} isRequired>
           <FormLabel>Password</FormLabel>
-          <Input type="text" value={password} onChange={handlePasswordChange} />
+          <InputGroup size="md">
+            <Input
+              pr="4.5rem"
+              type={show ? "text" : "password"}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                {show ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           {!isErrorPassword ? null : (
             <FormErrorMessage>Please enter a password.</FormErrorMessage>
           )}
         </FormControl>
+
         <Button w="100%" onClick={handleSubmit}>
           SIGN UP
         </Button>

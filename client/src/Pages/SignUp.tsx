@@ -8,11 +8,13 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import * as validator from "validator";
 import PasswordChecklist from "react-password-checklist";
+import { useNavigate } from "react-router-dom";
 
 // Data validation
 const isInvalidEmail = (email: string) => {
@@ -41,6 +43,9 @@ const isInvalidPassword = (password: string) => {
 };
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -111,6 +116,9 @@ const SignUp = () => {
         })
         .then((response) => {
           console.log("RESPONSE", response);
+          const token = response.data;
+          localStorage.setItem("token", token);
+
           setName("");
           setEmail("");
           setUsername("");
@@ -120,6 +128,15 @@ const SignUp = () => {
           setSubmitClickedEmail(false);
           setSubmitClickedUsername(false);
           setSubmitClickedPassword(false);
+
+          navigate("/projects");
+          toast({
+            title: "Account created.",
+            description: "We've created your account for you.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
         });
     }
   };

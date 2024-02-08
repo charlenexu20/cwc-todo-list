@@ -11,11 +11,29 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import * as validator from "validator";
+import PasswordChecklist from "react-password-checklist";
 
 // Data validation
 const isInvalidEmail = (email: string) => {
   const emailFormat = /\S+@\S+\.\S+/;
   if (email.match(emailFormat)) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const isInvalidPassword = (password: string) => {
+  if (
+    validator.isStrongPassword(password, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    })
+  ) {
     return false;
   } else {
     return true;
@@ -29,6 +47,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
 
   const [show, setShow] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
 
   const [submitClickedName, setSubmitClickedName] = useState(false);
   const [submitClickedEmail, setSubmitClickedEmail] = useState(false);
@@ -38,7 +57,7 @@ const SignUp = () => {
   const isErrorName = name === "" && submitClickedName;
   const isErrorEmail = isInvalidEmail(email) && submitClickedEmail;
   const isErrorUsername = username === "" && submitClickedUsername;
-  const isErrorPassword = password === "" && submitClickedPassword;
+  const isErrorPassword = isInvalidPassword(password) && submitClickedPassword;
 
   const handleNameChange = (e: any) => {
     setSubmitClickedName(false);
@@ -62,6 +81,7 @@ const SignUp = () => {
     setSubmitClickedPassword(false);
     const value = e.target.value;
     setPassword(value);
+    setShowChecklist(!!value);
   };
 
   const handleShowClick = (e: any) => {
@@ -78,7 +98,7 @@ const SignUp = () => {
       name === "" ||
       isInvalidEmail(email) ||
       username === "" ||
-      password === ""
+      isInvalidPassword(password)
     ) {
       return;
     } else {
@@ -95,6 +115,7 @@ const SignUp = () => {
           setEmail("");
           setUsername("");
           setPassword("");
+          setShowChecklist(false);
           setSubmitClickedName(false);
           setSubmitClickedEmail(false);
           setSubmitClickedUsername(false);
@@ -149,6 +170,7 @@ const SignUp = () => {
               value={password}
               onChange={handlePasswordChange}
             />
+
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                 {show ? "Hide" : "Show"}
@@ -156,10 +178,30 @@ const SignUp = () => {
             </InputRightElement>
           </InputGroup>
           {!isErrorPassword ? null : (
-            <FormErrorMessage>Please enter a password.</FormErrorMessage>
+            <FormErrorMessage>Please enter a valid password.</FormErrorMessage>
+          )}
+          {showChecklist && (
+            <PasswordChecklist
+              rules={[
+                "lowercase",
+                "capital",
+                "number",
+                "specialChar",
+                "minLength",
+              ]}
+              iconSize={12}
+              minLength={8}
+              value={password}
+              messages={{
+                lowercase: "1 lower case character",
+                capital: "1 upper case character",
+                number: "1 number",
+                specialChar: "1 symbol",
+                minLength: "8 characters minimum",
+              }}
+            />
           )}
         </FormControl>
-
         <Button w="100%" onClick={handleSubmit}>
           SIGN UP
         </Button>

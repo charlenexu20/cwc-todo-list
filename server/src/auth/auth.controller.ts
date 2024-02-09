@@ -12,10 +12,10 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import * as sanitizeHtml from 'sanitize-html';
 import { Transform } from 'class-transformer';
 
-type LogInDto = {
-  username: string;
-  password: string;
-};
+// type LogInDto = {
+//   username: string;
+//   password: string;
+// };
 
 export class SignUpDto {
   @IsNotEmpty()
@@ -45,20 +45,15 @@ export class AuthController {
     return req.user;
   }
 
-  @Post('/log-in')
-  async logIn(@Body() logInDto: LogInDto) {
-    console.log(logInDto.username, logInDto.password);
-    return await this.authService.logIn(logInDto.username, logInDto.password);
-  }
+  // @Post('/log-in')
+  // async logIn(@Body() logInDto: LogInDto) {
+  //   console.log(logInDto.username, logInDto.password);
+  //   return await this.authService.logIn(logInDto.username, logInDto.password);
+  // }
 
   @Post('sign-up')
   async signUp(@Body() signUpDto: SignUpDto) {
     console.log(signUpDto);
-    return await this.authService.signUp(
-      signUpDto.name,
-      signUpDto.email,
-      signUpDto.username,
-      signUpDto.password,
-    );
+    return await this.authService.signUp(signUpDto);
   }
 }

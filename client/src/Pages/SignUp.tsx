@@ -137,6 +137,26 @@ const SignUp = () => {
             duration: 3000,
             isClosable: true,
           });
+        })
+        .catch((error) => {
+          setName("");
+          setEmail("");
+          setUsername("");
+          setPassword("");
+          setShowChecklist(false);
+          setSubmitClickedName(false);
+          setSubmitClickedEmail(false);
+          setSubmitClickedUsername(false);
+          setSubmitClickedPassword(false);
+
+          console.log("ERROR", error);
+          toast({
+            title: "Error",
+            description: error.response.data.message,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
         });
     }
   };

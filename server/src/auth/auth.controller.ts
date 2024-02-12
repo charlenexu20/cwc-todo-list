@@ -12,11 +12,6 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import * as sanitizeHtml from 'sanitize-html';
 import { Transform } from 'class-transformer';
 
-// type LogInDto = {
-//   username: string;
-//   password: string;
-// };
-
 export class SignUpDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -31,6 +26,17 @@ export class SignUpDto {
   username: string;
 
   @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  password: string;
+}
+
+export class LogInDto {
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  username: string;
+
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
   password: string;
 }
 
@@ -38,22 +44,24 @@ export class SignUpDto {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(AuthGuard)
-  @Get('user')
-  async getUserData(@Request() req) {
-    console.log('REQ USER', req.user);
-    return req.user;
-  }
-
-  // @Post('/log-in')
-  // async logIn(@Body() logInDto: LogInDto) {
-  //   console.log(logInDto.username, logInDto.password);
-  //   return await this.authService.logIn(logInDto.username, logInDto.password);
-  // }
-
   @Post('sign-up')
   async signUp(@Body() signUpDto: SignUpDto) {
     console.log(signUpDto);
     return await this.authService.signUp(signUpDto);
+  }
+
+  @Post('/log-in')
+  async logIn(@Body() logInDto: LogInDto) {
+    return await this.authService.logIn(logInDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user-details')
+  async getUserData(@Request() req) {
+    if (req.user) {
+      return req.user;
+    } else {
+      return 'no user';
+    }
   }
 }

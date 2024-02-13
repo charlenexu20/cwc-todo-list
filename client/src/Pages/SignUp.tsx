@@ -14,7 +14,8 @@ import axios from "axios";
 import { useState } from "react";
 import * as validator from "validator";
 import PasswordChecklist from "react-password-checklist";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { Context } from "../App";
 
 // Data validation
 const isInvalidEmail = (email: string) => {
@@ -45,6 +46,7 @@ const isInvalidPassword = (password: string) => {
 const SignUp = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const context = useOutletContext() as Context;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -115,8 +117,8 @@ const SignUp = () => {
           password,
         })
         .then((response) => {
-          console.log("RESPONSE", response);
           const token = response.data;
+          context.toggleLoggedIn();
           localStorage.setItem("token", token);
 
           setName("");
@@ -163,7 +165,9 @@ const SignUp = () => {
 
   return (
     <Box>
-      <Heading textAlign="center">Create an account</Heading>
+      <Heading textAlign="center" mb={4}>
+        Register
+      </Heading>
       <Box
         maxW="75%"
         display="flex"
@@ -174,7 +178,12 @@ const SignUp = () => {
       >
         <FormControl isInvalid={isErrorName} isRequired>
           <FormLabel>Name</FormLabel>
-          <Input type="text" value={name} onChange={handleNameChange} />
+          <Input
+            type="text"
+            size="lg"
+            value={name}
+            onChange={handleNameChange}
+          />
           {!isErrorName ? null : (
             <FormErrorMessage>Please enter your full name.</FormErrorMessage>
           )}
@@ -182,7 +191,12 @@ const SignUp = () => {
 
         <FormControl isInvalid={isErrorEmail} isRequired>
           <FormLabel>Email</FormLabel>
-          <Input type="email" value={email} onChange={handleEmailChange} />
+          <Input
+            type="email"
+            size="lg"
+            value={email}
+            onChange={handleEmailChange}
+          />
           {!isErrorEmail ? null : (
             <FormErrorMessage>
               Please enter a valid email address.
@@ -192,7 +206,12 @@ const SignUp = () => {
 
         <FormControl isInvalid={isErrorUsername} isRequired>
           <FormLabel>Username</FormLabel>
-          <Input type="text" value={username} onChange={handleUsernameChange} />
+          <Input
+            type="text"
+            size="lg"
+            value={username}
+            onChange={handleUsernameChange}
+          />
           {!isErrorUsername ? null : (
             <FormErrorMessage>Please enter a username.</FormErrorMessage>
           )}
@@ -200,10 +219,11 @@ const SignUp = () => {
 
         <FormControl isInvalid={isErrorPassword} isRequired>
           <FormLabel>Password</FormLabel>
-          <InputGroup size="md">
+          <InputGroup size="lg">
             <Input
               pr="4.5rem"
               type={show ? "text" : "password"}
+              size="lg"
               value={password}
               onChange={handlePasswordChange}
             />
@@ -239,8 +259,8 @@ const SignUp = () => {
             />
           )}
         </FormControl>
-        <Button w="100%" onClick={handleSubmit}>
-          SIGN UP
+        <Button w="100%" size="lg" onClick={handleSubmit}>
+          CREATE MY ACCOUNT
         </Button>
       </Box>
     </Box>

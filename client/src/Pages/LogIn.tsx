@@ -12,11 +12,13 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { Context } from "../App";
 
 const LogIn = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const context = useOutletContext() as Context;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -59,6 +61,7 @@ const LogIn = () => {
         })
         .then((response) => {
           const token = response.data;
+          context.toggleLoggedIn();
           localStorage.setItem("token", token);
 
           setUsername("");
@@ -96,7 +99,9 @@ const LogIn = () => {
 
   return (
     <Box>
-      <Heading textAlign="center">Log in</Heading>
+      <Heading textAlign="center" mb={4}>
+        Login
+      </Heading>
       <Box
         maxW="75%"
         display="flex"
@@ -107,7 +112,12 @@ const LogIn = () => {
       >
         <FormControl isInvalid={isErrorUsername} isRequired>
           <FormLabel>Username</FormLabel>
-          <Input type="text" value={username} onChange={handleUsernameChange} />
+          <Input
+            type="text"
+            size="lg"
+            value={username}
+            onChange={handleUsernameChange}
+          />
           {!isErrorUsername ? null : (
             <FormErrorMessage>Please enter a username.</FormErrorMessage>
           )}
@@ -115,10 +125,11 @@ const LogIn = () => {
 
         <FormControl isInvalid={isErrorPassword} isRequired>
           <FormLabel>Password</FormLabel>
-          <InputGroup size="md">
+          <InputGroup size="lg">
             <Input
               pr="4.5rem"
               type={show ? "text" : "password"}
+              size="lg"
               value={password}
               onChange={handlePasswordChange}
             />
@@ -133,8 +144,8 @@ const LogIn = () => {
             <FormErrorMessage>Please enter a valid password.</FormErrorMessage>
           )}
         </FormControl>
-        <Button w="100%" onClick={handleSubmit}>
-          LOG IN
+        <Button w="100%" size="lg" onClick={handleSubmit}>
+          LOGIN
         </Button>
       </Box>
     </Box>

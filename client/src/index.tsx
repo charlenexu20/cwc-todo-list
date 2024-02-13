@@ -20,6 +20,23 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    loader: async () => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        try {
+          const response = await axios.get(
+            "http://localhost:3001/auth/profile",
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+          return response.data;
+        } catch (error) {
+          return {};
+        }
+      } else {
+        return {};
+      }
+    },
     children: [
       {
         path: "/sign-up",
@@ -38,7 +55,6 @@ const router = createBrowserRouter([
         element: <Profile />,
         loader: async () => {
           const token = localStorage.getItem("token");
-          // if we have a token, we'll use it as a bearer token on our request for user data
           if (token) {
             try {
               const response = await axios.get(
@@ -47,7 +63,6 @@ const router = createBrowserRouter([
               );
               return response.data;
             } catch (error) {
-              // if you have an expired token, we will show an error toast and redirect the user to the log-in page
               toast({
                 title: "An error occurred.",
                 description: "You must be signed in to view this page.",
@@ -58,7 +73,6 @@ const router = createBrowserRouter([
               return redirect("/log-in");
             }
           } else {
-            // if we do not have a token, we will show an error toast and redirect the user to the sign-up page
             toast({
               title: "An error occurred.",
               description: "You must have an account to view this page.",

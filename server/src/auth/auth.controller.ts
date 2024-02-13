@@ -45,23 +45,18 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('sign-up')
-  async signUp(@Body() signUpDto: SignUpDto) {
-    console.log(signUpDto);
-    return await this.authService.signUp(signUpDto);
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
   }
 
   @Post('/log-in')
-  async logIn(@Body() logInDto: LogInDto) {
-    return await this.authService.logIn(logInDto);
+  logIn(@Body() logInDto: LogInDto) {
+    return this.authService.logIn(logInDto);
   }
 
   @UseGuards(AuthGuard)
-  @Get('user-details')
-  async getUserData(@Request() req) {
-    if (req.user) {
-      return req.user;
-    } else {
-      return 'no user';
-    }
+  @Get('profile')
+  getProfileData(@Request() req) {
+    return this.authService.getProfileData(req.user.username);
   }
 }

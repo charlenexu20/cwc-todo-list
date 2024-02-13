@@ -12,6 +12,9 @@ import LogIn from "./pages/LogIn";
 import Projects from "./pages/Projects";
 import Profile from "./pages/Profile";
 import axios from "axios";
+import { createStandaloneToast } from "@chakra-ui/react";
+
+const { ToastContainer, toast } = createStandaloneToast();
 
 const router = createBrowserRouter([
   {
@@ -34,9 +37,7 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
         loader: async () => {
-          // get a token from localstorage
           const token = localStorage.getItem("token");
-
           // if we have a token, we'll use it as a bearer token on our request for user data
           if (token) {
             try {
@@ -47,14 +48,26 @@ const router = createBrowserRouter([
               return response.data;
             } catch (error) {
               // if you have an expired token, we will show an error toast and redirect the user to the log-in page
-              console.log("ERROR: ", error);
+              toast({
+                title: "An error occurred.",
+                description: "You must be signed in to view this page.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+              });
               return redirect("/log-in");
             }
           } else {
-            console.log("NO TOKEN");
+            // if we do not have a token, we will show an error toast and redirect the user to the sign-up page
+            toast({
+              title: "An error occurred.",
+              description: "You must have an account to view this page.",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
             return redirect("/sign-up");
           }
-          // if we do not have a token, we will show an error toast and redirect the user to the sign-up page
         },
       },
     ],
@@ -65,4 +78,9 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
-root.render(<RouterProvider router={router} />);
+root.render(
+  <>
+    <ToastContainer />
+    <RouterProvider router={router} />
+  </>,
+);

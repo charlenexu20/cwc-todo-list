@@ -1,23 +1,38 @@
-import './App.css';
-import * as React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react'
-import UserList from './components/UserList';
-import UserForm from './components/UserForm';
-import MainPage from './components/MainPage';
-import Navigation from './components/Navigation';
+import { Outlet, useLoaderData } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import Header from "./components/Header";
+import { useState } from "react";
+
+type Data = {
+  name: string;
+  email: string;
+  username: string;
+};
+
+export type Context = {
+  loggedIn: boolean;
+  toggleLoggedIn: () => void;
+};
 
 function App() {
+  const data = useLoaderData() as Data | undefined;
+  const [loggedIn, setLoggedIn] = useState(data?.username !== undefined);
+
+  const toggleLoggedIn = () => {
+    setLoggedIn(!loggedIn);
+  };
+
+  const context: Context = {
+    loggedIn,
+    toggleLoggedIn,
+  };
+
+  console.log("LOGGED IN: ", loggedIn);
+
   return (
     <ChakraProvider>
-      <Router>
-          <Navigation />
-        <Routes>
-          <Route path="/users/new" element={<UserForm />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/" element={<MainPage />} />
-        </Routes>
-      </Router>
+      <Header loggedIn={loggedIn} />
+      <Outlet context={context} />
     </ChakraProvider>
   );
 }

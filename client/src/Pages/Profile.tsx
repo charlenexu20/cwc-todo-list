@@ -2,15 +2,17 @@ import { Avatar, Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
 import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 import UserDetailsRow from "../components/Profile/UserDetailsRow";
+import { useState } from "react";
 
-type Data = {
+export type Data = {
   name: string;
   email: string;
   username: string;
 };
 
 const Profile = () => {
-  const data = useLoaderData() as Data;
+  const loaderData = useLoaderData() as Data;
+  const [data, setData] = useState(loaderData);
   const navigate = useNavigate();
   const toast = useToast();
   const context = useOutletContext() as Context;
@@ -48,21 +50,25 @@ const Profile = () => {
             field="Name"
             value={data.name}
             username={data.username}
+            setData={setData}
           />
           <UserDetailsRow
             field="Email"
             value={data.email}
             username={data.username}
+            setData={setData}
           />
           <UserDetailsRow
             field="Username"
             value={data.username}
             username={data.username}
+            setData={setData}
           />
           <UserDetailsRow
             field="Password"
             value="********"
             username={data.username}
+            setData={setData}
           />
         </Box>
       </Box>

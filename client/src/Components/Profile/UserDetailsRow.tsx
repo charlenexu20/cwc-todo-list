@@ -1,7 +1,8 @@
-import { Box, IconButton, Input, Text } from "@chakra-ui/react";
+import { Box, IconButton, Input, Text, useToast } from "@chakra-ui/react";
 import { CheckIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import axios from "axios";
+import { isInvalidEmail, isInvalidPassword } from "../../pages/SignUp";
 
 type Props = {
   field: string;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const UserDetailsRow = ({ field, value, username }: Props) => {
+  const toast = useToast();
+
   const [updateField, setUpdateField] = useState(false);
   const [valueState, setValueState] = useState(value);
 
@@ -22,9 +25,52 @@ const UserDetailsRow = ({ field, value, username }: Props) => {
   };
 
   const handleCheckClick = () => {
+    if (field === "Email" && valueState !== "") {
+      const invalidEmail = isInvalidEmail(valueState);
+      if (invalidEmail) {
+        toast({
+          title: "Error",
+          description: "Please enter a valid email!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    } else if (field === "Password" && valueState !== "") {
+      const invalidPassword = isInvalidPassword(valueState);
+      if (invalidPassword) {
+        toast({
+          title: "Error",
+          description: (
+            <Box>
+              <Box>Password must meet the following criteria:</Box>
+              <Box>- At least 8 characters long</Box>
+              <Box>- Include at least one lowercase letter</Box>
+              <Box>- Include at least one number</Box>
+              <Box>- Include at least one symbol (such as !, @, #, etc.)</Box>
+            </Box>
+          ),
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    } else {
+      if (valueState === "") {
+        toast({
+          title: "Error",
+          description: "Field can't be blank!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
+
     const token = localStorage.getItem("token");
-    console.log("TOKEN", token);
-    console.log("USERNAME", username);
 
     setUpdateField(!updateField);
 
@@ -40,6 +86,24 @@ const UserDetailsRow = ({ field, value, username }: Props) => {
       )
       .then((response) => {
         console.log("RESPONSE: ", response.data);
+        toast({
+          title: "Success",
+          description: "Your account details have been updated!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        console.log("ERROR: ", error);
+        toast({
+          title: "Error",
+          description:
+            "There was an error. Please review your values and try again!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       });
   };
 

@@ -27,7 +27,7 @@ export const isInvalidEmail = (email: string) => {
   }
 };
 
-const isInvalidPassword = (password: string) => {
+export const isInvalidPassword = (password: string) => {
   if (
     validator.isStrongPassword(password, {
       minLength: 8,

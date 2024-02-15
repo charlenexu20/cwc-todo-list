@@ -6,7 +6,7 @@ import {
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LogInDto, SignUpDto } from './auth.controller';
+import { AccountDetailDto, LogInDto, SignUpDto } from './auth.controller';
 
 @Injectable()
 export class AuthService {
@@ -72,8 +72,23 @@ export class AuthService {
     return await this.createAccessToken(user);
   }
 
+  async changeAccountDetail(accountDetailDto: AccountDetailDto) {
+    const user = await this.usersService.findUserByUsername(
+      accountDetailDto.username,
+    );
+
+    if (accountDetailDto.field === 'password') {
+      const plainTextPassword = accountDetailDto.value;
+      const hashedPassword = await this.hashPassword(plainTextPassword);
+      user[accountDetailDto.field] = hashedPassword;
+    } else {
+      user[accountDetailDto.field] = accountDetailDto.value;
+    }
+
+    return await this.usersService.createUser(user);
+  }
+
   async getProfileData(username: string) {
-    console.log('USERNAME: ', username);
     const user = await this.usersService.findUserByUsername(username);
     return {
       email: user.email,

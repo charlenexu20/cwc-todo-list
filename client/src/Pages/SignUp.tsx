@@ -18,7 +18,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 
 // Data validation
-const isInvalidEmail = (email: string) => {
+export const isInvalidEmail = (email: string) => {
   const emailFormat = /\S+@\S+\.\S+/;
   if (email.match(emailFormat)) {
     return false;

@@ -8,6 +8,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Link,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -147,6 +149,15 @@ const LogIn = () => {
         <Button w="100%" size="lg" onClick={handleSubmit}>
           LOGIN
         </Button>
+        <Box w="100%" display="flex" lineHeight="40px">
+          <Link href="#" textDecorationLine="underline">
+            Forgot your password?
+          </Link>
+          <Text paddingInline={4}>/</Text>
+          <Link href="/sign-up" textDecorationLine="underline">
+            Create account
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

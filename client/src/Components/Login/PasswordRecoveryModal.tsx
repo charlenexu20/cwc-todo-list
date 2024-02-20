@@ -9,8 +9,11 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
+import { isInvalidEmail } from "../../pages/SignUp";
 
 type Props = {
   isOpen: boolean;
@@ -18,15 +21,54 @@ type Props = {
 };
 
 const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
+  const toast = useToast();
   const [email, setEmail] = useState("");
 
   const handleEmailChange = (e: any) => {
     setEmail(e.target.value);
   };
 
-  const handleButtonClick = () => {
+  const handleEmailSubmit = () => {
     console.log("EMAIL: ", email);
-    onClose();
+    const invalidEmail = isInvalidEmail(email);
+    if (invalidEmail) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid email!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      axios
+        .post("http://localhost:3001/auth/reset-password", {
+          email,
+        })
+        .then((response) => {
+          setEmail("");
+          onClose();
+          console.log("RESPONSE: ", response.data);
+          toast({
+            title: "Success",
+            description:
+              "Reset password email sent! Please check your inbox and follow the instructions to reset your password.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          toast({
+            title: "Error",
+            description: error.response.data.message,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+    }
+    // onClose();
   };
 
   return (
@@ -52,7 +94,7 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
             />
           </Box>
         </ModalBody>
-        <Button w="100%" m={4} onClick={handleButtonClick}>
+        <Button w="100%" m={4} onClick={handleEmailSubmit}>
           SUBMIT
         </Button>
       </ModalContent>

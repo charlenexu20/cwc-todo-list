@@ -7,11 +7,14 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AccountDetailDto, LogInDto, SignUpDto } from './auth.controller';
+import { User } from 'src/users/entities/user.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private mailService: MailService,
     private jwtService: JwtService,
   ) {}
 
@@ -20,9 +23,17 @@ export class AuthService {
     return await bcrypt.hash(password, saltRounds);
   }
 
-  async createAccessToken(user) {
+  async createAccessToken(user: User, secret?: string) {
     const payload = { sub: user.id };
-    return await this.jwtService.signAsync(payload);
+
+    if (secret) {
+      return await this.jwtService.signAsync(payload, {
+        secret,
+        expiresIn: '10m',
+      });
+    } else {
+      return await this.jwtService.signAsync(payload);
+    }
   }
 
   async signUp(signUpDto: SignUpDto) {
@@ -100,5 +111,19 @@ export class AuthService {
       name: user.name,
       username: user.username,
     };
+  }
+
+  async sendResetPasswordEmail(email: string) {
+    const user = await this.usersService.findUserByEmail(email);
+
+    if (user === null) {
+      throw new BadRequestException('email not found');
+    }
+
+    // Create a JWT with the user's current hashed password as secret
+    const token = await this.createAccessToken(user, user.password);
+
+    // Send an email to the user with a link to a reset password page on the frontend with the JWT and userId as params
+    return await this.mailService.sendPasswordResetEmail(user, token);
   }
 }

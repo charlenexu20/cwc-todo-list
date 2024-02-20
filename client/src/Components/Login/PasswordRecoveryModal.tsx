@@ -46,7 +46,6 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
         })
         .then((response) => {
           setEmail("");
-          onClose();
           console.log("RESPONSE: ", response.data);
           toast({
             title: "Success",
@@ -58,17 +57,27 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
           });
         })
         .catch((error) => {
-          console.log(error);
-          toast({
-            title: "Error",
-            description: error.response.data.message,
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
+          if (error.response.data.message === "email not found") {
+            toast({
+              title: "Success",
+              description:
+                "Reset password email sent! Please check your inbox and follow the instructions to reset your password.",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: error.response.data.message,
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
+          }
         });
+      onClose();
     }
-    // onClose();
   };
 
   return (

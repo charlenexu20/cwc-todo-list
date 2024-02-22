@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 import UserDetailsRow from "../components/Profile/UserDetailsRow";
 import { useState } from "react";
+import axios from "axios";
 
 export type Data = {
   name: string;
@@ -31,6 +32,40 @@ const Profile = () => {
       isClosable: true,
     });
   };
+
+  const deleteAccount = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .post(
+        "http://localhost:3001/auth/delete-user",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      .then((response) => {
+        localStorage.removeItem("token");
+        navigate("/sign-up");
+        console.log("RESPONSE: ", response.data);
+        toast({
+          title: "Success",
+          description:
+            "Your account has been deleted. We're sorry to see you go!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        console.log("ERROR: ", error);
+        toast({
+          title: "Error",
+          description: "Failed to delete account. Please try again later!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+  };
+
   return (
     <Box>
       <Heading textAlign="center" mb={4}>
@@ -76,7 +111,7 @@ const Profile = () => {
         <Button onClick={logOut} size="lg">
           Logout
         </Button>
-        <Button onClick={() => {}} size="lg">
+        <Button onClick={deleteAccount} size="lg">
           Delete Account
         </Button>
       </Box>

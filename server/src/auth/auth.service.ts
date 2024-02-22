@@ -146,4 +146,8 @@ export class AuthService {
         return await this.usersService.createUser(user);
       });
   }
+
+  async deleteUser(id: number) {
+    return await this.usersService.deleteUser(id);
+  }
 }

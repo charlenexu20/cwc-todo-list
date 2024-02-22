@@ -109,4 +109,10 @@ export class AuthController {
       body.token,
     );
   }
+
+  @UseGuards(AuthGuard)
+  @Post('delete-user')
+  deleteUser(@Request() req) {
+    return this.authService.deleteUser(req.user.sub);
+  }
 }

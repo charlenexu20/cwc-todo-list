@@ -58,6 +58,18 @@ export class Email {
   email: string;
 }
 
+export class NewPasswordDto {
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  newPassword: string;
+
+  @IsNotEmpty()
+  id: number;
+
+  @IsNotEmpty()
+  token: string;
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -85,7 +97,16 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  sendResetPasswordEmail(@Body() email: Email) {
-    return this.authService.sendResetPasswordEmail(email.email);
+  sendResetPasswordEmail(@Body() body: Email) {
+    return this.authService.sendResetPasswordEmail(body.email);
+  }
+
+  @Post('save-new-password')
+  saveNewPassword(@Body() body: NewPasswordDto) {
+    return this.authService.sendNewPassword(
+      body.newPassword,
+      body.id,
+      body.token,
+    );
   }
 }

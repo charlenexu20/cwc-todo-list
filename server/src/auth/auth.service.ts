@@ -126,4 +126,24 @@ export class AuthService {
     // Send an email to the user with a link to a reset password page on the frontend with the JWT and userId as params
     return await this.mailService.sendPasswordResetEmail(user, token);
   }
+
+  async sendNewPassword(newPassword: string, id: number, token: string) {
+    // Get the user associated with that id
+    const user = await this.usersService.findUserById(id);
+
+    // Verify token using the user we just looked up's hashed password
+    await this.jwtService
+      .verifyAsync(token, {
+        secret: user.password,
+      })
+      .catch(() => {
+        throw new UnauthorizedException('token is invalid');
+      })
+      .then(async () => {
+        // If we have a payload, hash the newPassword and update the user in the database
+        const hashedPassword = await this.hashPassword(newPassword);
+        user.password = hashedPassword;
+        return await this.usersService.createUser(user);
+      });
+  }
 }

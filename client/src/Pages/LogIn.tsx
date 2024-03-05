@@ -8,17 +8,22 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Link,
+  Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
+import PasswordRecoveryModal from "../components/Login/PasswordRecoveryModal";
 
 const LogIn = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const context = useOutletContext() as Context;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -147,6 +152,16 @@ const LogIn = () => {
         <Button w="100%" size="lg" onClick={handleSubmit}>
           LOGIN
         </Button>
+        <Box w="100%" display="flex" lineHeight="40px">
+          <Link href="#" onClick={onOpen} textDecorationLine="underline">
+            Forgot your password?
+          </Link>
+          <Text paddingInline={4}>/</Text>
+          <Link href="/sign-up" textDecorationLine="underline">
+            Create account
+          </Link>
+        </Box>
+        <PasswordRecoveryModal isOpen={isOpen} onClose={onClose} />
       </Box>
     </Box>
   );

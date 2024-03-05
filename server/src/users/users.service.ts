@@ -11,6 +11,10 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
+  async findUserById(id: number) {
+    return await this.userRepository.findOneBy({ id });
+  }
+
   async findUserByUsername(username: string) {
     return await this.userRepository.findOneBy({ username });
   }
@@ -21,5 +25,9 @@ export class UsersService {
 
   async createUser(user: SignUpDto) {
     return await this.userRepository.save({ ...user });
+  }
+
+  async deleteUser(id: number) {
+    return await this.userRepository.delete(id);
   }
 }

@@ -8,6 +8,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Link,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -18,7 +20,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 
 // Data validation
-const isInvalidEmail = (email: string) => {
+export const isInvalidEmail = (email: string) => {
   const emailFormat = /\S+@\S+\.\S+/;
   if (email.match(emailFormat)) {
     return false;
@@ -27,7 +29,7 @@ const isInvalidEmail = (email: string) => {
   }
 };
 
-const isInvalidPassword = (password: string) => {
+export const isInvalidPassword = (password: string) => {
   if (
     validator.isStrongPassword(password, {
       minLength: 8,
@@ -262,6 +264,13 @@ const SignUp = () => {
         <Button w="100%" size="lg" onClick={handleSubmit}>
           CREATE MY ACCOUNT
         </Button>
+        <Box w="100%" display="flex" lineHeight="40px">
+          <Text>Already have an account?</Text>
+          <Text paddingInline={4}>/</Text>
+          <Link href="/log-in" textDecorationLine="underline">
+            Log in
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

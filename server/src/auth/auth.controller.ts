@@ -96,6 +96,12 @@ export class AuthController {
     return this.authService.getProfileData(req.user.sub);
   }
 
+  @UseGuards(AuthGuard)
+  @Get('user-projects')
+  getUserProjects(@Request() req) {
+    return this.authService.getProfileData(req.user.sub);
+  }
+
   @Post('reset-password')
   sendResetPasswordEmail(@Body() body: Email) {
     return this.authService.sendResetPasswordEmail(body.email);

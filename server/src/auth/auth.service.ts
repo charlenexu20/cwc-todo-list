@@ -9,11 +9,13 @@ import { JwtService } from '@nestjs/jwt';
 import { AccountDetailDto, LogInDto, SignUpDto } from './auth.controller';
 import { User } from 'src/users/entities/user.entity';
 import { MailService } from 'src/mail/mail.service';
+import { ProjectsService } from 'src/projects/projects.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private projectsService: ProjectsService,
     private mailService: MailService,
     private jwtService: JwtService,
   ) {}

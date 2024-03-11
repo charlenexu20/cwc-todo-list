@@ -24,6 +24,7 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitClickedName, setSubmitClickedName] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const isErrorName = name === "" && submitClickedName;
 
@@ -36,31 +37,32 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
 
   const handleSubmit = () => {
     setSubmitClickedName(true);
-    console.log("name: ", name);
-    console.log("description: ", description);
 
-    setProjects([
-      ...projects,
-      {
-        name,
-        description,
-        status: "To Do",
-      },
-    ]);
+    if (name !== "") {
+      setIsOpen(false);
 
-    setName("");
-    setDescription("");
+      setProjects([
+        ...projects,
+        {
+          name,
+          description,
+          status: "To Do",
+        },
+      ]);
 
-    setSubmitClickedName(false);
+      setName("");
+      setDescription("");
+      setSubmitClickedName(false);
+    }
   };
 
   return (
-    <Accordion allowMultiple>
+    <Accordion allowToggle index={isOpen ? 0 : 1}>
       <AccordionItem border="1px solid">
         {({ isExpanded }) => (
           <>
             <h2>
-              <AccordionButton h="56px">
+              <AccordionButton onClick={() => setIsOpen(!isOpen)} h="56px">
                 {isExpanded ? (
                   <MinusIcon fontSize="12px" />
                 ) : (

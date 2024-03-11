@@ -1,8 +1,10 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { Data } from "./Profile";
+import CreateProjectAccordion from "../components/Projects/CreateProjectAccordion";
+import { useState } from "react";
 
-type Project = {
+export type Project = {
   name: string;
   description: string;
   status: string;
@@ -50,14 +52,15 @@ const demoProjects: Project[] = [
 
 const Projects = () => {
   const data = useLoaderData() as Data;
-  console.log("DATA", data);
+  const [projects, setProjects] = useState(demoProjects);
+
   return (
-    <Box m={10}>
+    <Box>
       <Heading textAlign="center" mb={4} fontSize={20}>
         {data.name}'s Projects
       </Heading>
       <Box m={10}>
-        {demoProjects.map((project) => {
+        {projects.map((project) => {
           return (
             <Box display="flex" border="1px solid" p={4} mb={6}>
               <Text w="15%">{project.name}</Text>
@@ -70,6 +73,7 @@ const Projects = () => {
             </Box>
           );
         })}
+        <CreateProjectAccordion projects={projects} setProjects={setProjects} />
       </Box>
     </Box>
   );

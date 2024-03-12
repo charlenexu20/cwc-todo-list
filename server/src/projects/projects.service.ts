@@ -9,4 +9,19 @@ export class ProjectsService {
     @InjectRepository(Project)
     private projectsRepository: Repository<Project>,
   ) {}
+
+  async getUserProjects(id: number) {
+    return this.projectsRepository.find({ where: { user: { id } } });
+  }
+
+  async createProject(name: string, description: string, userId: number) {
+    await this.projectsRepository.save({
+      name,
+      description,
+      user: {
+        id: userId,
+      },
+    });
+    return await this.getUserProjects(userId);
+  }
 }

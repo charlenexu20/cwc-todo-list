@@ -152,4 +152,19 @@ export class AuthService {
   async deleteUser(id: number) {
     return await this.usersService.deleteUser(id);
   }
+
+  async getUserProjects(userId: number) {
+    const user = await this.getProfileData(userId);
+    const projects = await this.projectsService.getUserProjects(userId);
+    console.log('USER: ', user);
+    console.log('PROJECT: ', projects);
+    return {
+      user,
+      projects,
+    };
+  }
+
+  async createProject(name: string, description: string, userId: number) {
+    return await this.projectsService.createProject(name, description, userId);
+  }
 }

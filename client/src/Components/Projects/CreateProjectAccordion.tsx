@@ -11,9 +11,11 @@ import {
   FormLabel,
   Input,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Project } from "../../pages/Projects";
+import axios from "axios";
 
 type Props = {
   projects: Project[];
@@ -21,6 +23,8 @@ type Props = {
 };
 
 const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
+  const toast = useToast();
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitClickedName, setSubmitClickedName] = useState(false);
@@ -41,18 +45,42 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
     if (name !== "") {
       setIsOpen(false);
 
-      setProjects([
-        ...projects,
-        {
-          name,
-          description,
-          status: "To Do",
-        },
-      ]);
+      const token = localStorage.getItem("token");
 
-      setName("");
-      setDescription("");
-      setSubmitClickedName(false);
+      axios
+        .post(
+          "http://localhost:3001/auth/create-project",
+          {
+            name,
+            description,
+          },
+          { headers: { Authorization: `Bearer ${token}` } },
+        )
+        .then((response) => {
+          setProjects(response.data);
+          setName("");
+          setDescription("");
+          setSubmitClickedName(false);
+
+          toast({
+            title: "Success",
+            description: "Your project has been created!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        })
+        .catch((error) => {
+          console.log("ERROR: ", error);
+          toast({
+            title: "Error",
+            description:
+              "There was an error creating your project. Please try again.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        });
     }
   };
 

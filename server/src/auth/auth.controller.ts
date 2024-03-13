@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -110,6 +111,12 @@ export class AuthController {
   @Get('user-projects')
   getUserProjects(@Request() req) {
     return this.authService.getUserProjects(req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('project/:id')
+  getProject(@Param('id') id: number, @Request() req) {
+    return this.authService.getProject(req.user.sub, id);
   }
 
   @UseGuards(AuthGuard)

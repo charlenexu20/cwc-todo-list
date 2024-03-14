@@ -69,6 +69,16 @@ export class ProjectDto {
   description: string;
 }
 
+export class FeatureDto {
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  name: string;
+
+  @IsOptional()
+  @Transform((params) => sanitizeHtml(params.value))
+  description: string;
+}
+
 export class NewPasswordDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -125,6 +135,16 @@ export class AuthController {
     return this.authService.createProject(
       projectDto.name,
       projectDto.description,
+      req.user.sub,
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-feature')
+  createFeature(@Body() featureDto: FeatureDto, @Request() req) {
+    return this.authService.createFeature(
+      featureDto.name,
+      featureDto.description,
       req.user.sub,
     );
   }

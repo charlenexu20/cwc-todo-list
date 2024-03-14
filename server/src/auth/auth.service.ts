@@ -172,4 +172,11 @@ export class AuthService {
   async createProject(name: string, description: string, userId: number) {
     return await this.projectsService.createProject(name, description, userId);
   }
+
+  async createFeature(name: string, description: string, userId: number) {
+    console.log('name: ', name);
+    console.log('description: ', description);
+    console.log('userId: ', userId);
+    // return await this.projectsService.createProject(name, description, userId);
+  }
 }

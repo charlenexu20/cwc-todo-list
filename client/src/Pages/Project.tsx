@@ -1,11 +1,20 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { Project as ProjectType } from "./Projects";
+import CreateFeatureAccordion from "../components/Projects/CreateFeatureAccordion";
+import { useState } from "react";
+
+export type Feature = {
+  name: string;
+  status: "To Do" | "In Progress" | "Done";
+  userStoryCount: number;
+  completedUserStories: number;
+};
 
 // DEMO DATA
 const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
 
-const features = [
+const demoFeatures: Feature[] = [
   {
     name: "Feature A",
     status: "To Do",
@@ -66,6 +75,8 @@ const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
 
+  const [features, setFeatures] = useState(demoFeatures);
+
   return (
     <Box m={10}>
       <Box mb={20}>
@@ -87,7 +98,8 @@ const Project = () => {
                       justifyContent="space-between"
                       border="1px"
                       p={4}
-                      m={4}
+                      mt={4}
+                      mx={4}
                     >
                       <Text>{feature.name}</Text>
                       <Text>
@@ -96,8 +108,18 @@ const Project = () => {
                       </Text>
                     </Box>
                   );
+                } else {
+                  return null;
                 }
               })}
+              <Box p={4}>
+                {column.name === "To Do" && (
+                  <CreateFeatureAccordion
+                    features={features}
+                    setFeatures={setFeatures}
+                  />
+                )}
+              </Box>
             </Box>
           );
         })}

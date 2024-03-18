@@ -75,7 +75,9 @@ const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
 
-  const [features, setFeatures] = useState(demoFeatures);
+  const [features, setFeatures] = useState(project.features);
+
+  console.log("features: ", features);
 
   return (
     <Box m={10}>
@@ -117,6 +119,7 @@ const Project = () => {
                   <CreateFeatureAccordion
                     features={features}
                     setFeatures={setFeatures}
+                    projectId={project.id}
                   />
                 )}
               </Box>

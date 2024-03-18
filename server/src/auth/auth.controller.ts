@@ -77,6 +77,9 @@ export class FeatureDto {
   @IsOptional()
   @Transform((params) => sanitizeHtml(params.value))
   description: string;
+
+  @IsNotEmpty()
+  projectId: number;
 }
 
 export class NewPasswordDto {
@@ -146,6 +149,7 @@ export class AuthController {
       featureDto.name,
       featureDto.description,
       req.user.sub,
+      featureDto.projectId,
     );
   }
 

@@ -1,83 +1,28 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { Project as ProjectType } from "./Projects";
-import CreateFeatureAccordion from "../components/Projects/CreateFeatureAccordion";
+import CreateFeatureAccordion from "../components/Features/CreateFeatureAccordion";
 import { useState } from "react";
+import FeatureModal from "../components/Features/FeatureModal";
 
 export type Feature = {
   name: string;
   status: "To Do" | "In Progress" | "Done";
   userStoryCount: number;
   completedUserStories: number;
+  description?: string;
 };
 
-// DEMO DATA
 const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
-
-const demoFeatures: Feature[] = [
-  {
-    name: "Feature A",
-    status: "To Do",
-    userStoryCount: 10,
-    completedUserStories: 0,
-  },
-  {
-    name: "Feature B",
-    status: "In Progress",
-    userStoryCount: 6,
-    completedUserStories: 2,
-  },
-  {
-    name: "Feature C",
-    status: "Done",
-    userStoryCount: 10,
-    completedUserStories: 10,
-  },
-  {
-    name: "Feature D",
-    status: "To Do",
-    userStoryCount: 10,
-    completedUserStories: 0,
-  },
-  {
-    name: "Feature E",
-    status: "In Progress",
-    userStoryCount: 10,
-    completedUserStories: 2,
-  },
-  {
-    name: "Feature F",
-    status: "Done",
-    userStoryCount: 5,
-    completedUserStories: 5,
-  },
-  {
-    name: "Feature G",
-    status: "To Do",
-    userStoryCount: 10,
-    completedUserStories: 0,
-  },
-  {
-    name: "Feature H",
-    status: "In Progress",
-    userStoryCount: 8,
-    completedUserStories: 4,
-  },
-  {
-    name: "Feature I",
-    status: "Done",
-    userStoryCount: 6,
-    completedUserStories: 6,
-  },
-];
 
 const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
 
   const [features, setFeatures] = useState(project.features);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  console.log("features: ", features);
+  const [selectedFeature, setSelectedFeature] = useState(features[0]);
 
   return (
     <Box m={10}>
@@ -102,6 +47,8 @@ const Project = () => {
                       p={4}
                       mt={4}
                       mx={4}
+                      onClick={onOpen}
+                      _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
                     >
                       <Text>{feature.name}</Text>
                       <Text>
@@ -127,6 +74,14 @@ const Project = () => {
           );
         })}
       </Box>
+      <FeatureModal
+        isOpen={isOpen}
+        onClose={onClose}
+        featureName={selectedFeature.name}
+        featureDescription={
+          selectedFeature.description || "There is no description..."
+        }
+      />
     </Box>
   );
 };

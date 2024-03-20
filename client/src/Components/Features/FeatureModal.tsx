@@ -7,12 +7,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import UserStoryDetailsAccordion from "../UserStories/UserStoryDetailsAccordion";
+import CreateUserStoryAccordion from "../UserStories/CreateUserStoryAccordion";
+import { useState } from "react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   featureName: string;
   featureDescription: string;
+  featureId: number;
+};
+
+export type UserStory = {
+  name: string;
+  description: string;
+  status: string;
 };
 
 const sampleUserStories = [
@@ -48,7 +57,10 @@ const FeatureModal = ({
   onClose,
   featureName,
   featureDescription,
+  featureId,
 }: Props) => {
+  const [userStories, setUserStories] = useState(sampleUserStories);
+
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
       <ModalOverlay />
@@ -71,6 +83,11 @@ const FeatureModal = ({
                 />
               );
             })}
+            <CreateUserStoryAccordion
+              userStories={userStories}
+              setUserStories={setUserStories}
+              featureId={featureId}
+            />
           </Box>
         </Box>
       </ModalContent>

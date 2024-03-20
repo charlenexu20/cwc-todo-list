@@ -11,6 +11,7 @@ export type Feature = {
   userStoryCount: number;
   completedUserStories: number;
   description?: string;
+  id: number;
 };
 
 const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
@@ -47,7 +48,10 @@ const Project = () => {
                       p={4}
                       mt={4}
                       mx={4}
-                      onClick={onOpen}
+                      onClick={() => {
+                        onOpen();
+                        setSelectedFeature(feature);
+                      }}
                       _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
                     >
                       <Text>{feature.name}</Text>
@@ -81,6 +85,7 @@ const Project = () => {
         featureDescription={
           selectedFeature.description || "There is no description..."
         }
+        featureId={selectedFeature.id}
       />
     </Box>
   );

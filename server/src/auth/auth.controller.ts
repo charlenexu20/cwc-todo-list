@@ -82,6 +82,19 @@ export class FeatureDto {
   projectId: number;
 }
 
+export class UserStoryDto {
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  name: string;
+
+  @IsOptional()
+  @Transform((params) => sanitizeHtml(params.value))
+  description: string;
+
+  @IsNotEmpty()
+  featureId: number;
+}
+
 export class NewPasswordDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -151,6 +164,19 @@ export class AuthController {
       req.user.sub,
       featureDto.projectId,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-user-story')
+  createUserStory(@Body() userStoryDto: UserStoryDto, @Request() req) {
+    // return this.authService.createUserStory(
+    //   userStoryDto.name,
+    //   userStoryDto.description,
+    //   req.user.sub,
+    //   userStoryDto.featureId,
+    // );
+
+    console.log('USER STORY DTO: ', userStoryDto, req.user.sub);
   }
 
   @Post('reset-password')

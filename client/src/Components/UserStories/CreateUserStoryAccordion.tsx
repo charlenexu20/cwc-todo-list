@@ -15,19 +15,19 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
-import { Feature } from "../../pages/Project";
+import { UserStory } from "../Features/FeatureModal";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  features: Feature[];
-  setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
-  projectId: number;
+  userStories: UserStory[];
+  setUserStories: React.Dispatch<React.SetStateAction<UserStory[]>>;
+  featureId: number;
 };
 
-const CreateFeatureAccordion = ({
-  features,
-  setFeatures,
-  projectId,
+const CreateUserStoryAccordion = ({
+  userStories,
+  setUserStories,
+  featureId,
 }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
@@ -59,16 +59,16 @@ const CreateFeatureAccordion = ({
 
       axios
         .post(
-          "http://localhost:3001/auth/create-feature",
+          "http://localhost:3001/auth/create-user-story",
           {
             name,
             description,
-            projectId,
+            featureId,
           },
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((response) => {
-          setFeatures(response.data);
+          setUserStories(response.data);
           setName("");
           setDescription("");
           setSubmitClickedName(false);
@@ -96,7 +96,7 @@ const CreateFeatureAccordion = ({
             toast({
               title: "Error",
               description:
-                "There was an error creating your feature. Please try again.",
+                "There was an error creating your user story. Please try again.",
               status: "error",
               duration: 3000,
               isClosable: true,
@@ -119,13 +119,13 @@ const CreateFeatureAccordion = ({
                   <AddIcon fontSize="12px" />
                 )}
                 <Box as="span" flex="1" textAlign="left" ml={3}>
-                  Add a feature
+                  Add a user story
                 </Box>
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4} borderTop="1px solid">
               <FormControl isInvalid={isErrorName} isRequired mb={4}>
-                <FormLabel>Feature Name: </FormLabel>
+                <FormLabel>User Story Name: </FormLabel>
                 <Input
                   type="text"
                   size="lg"
@@ -133,18 +133,20 @@ const CreateFeatureAccordion = ({
                   onChange={handleNameChange}
                 />
                 {!isErrorName ? null : (
-                  <FormErrorMessage>Feature name is required.</FormErrorMessage>
+                  <FormErrorMessage>
+                    User story name is required.
+                  </FormErrorMessage>
                 )}
               </FormControl>
               <FormControl mb={4}>
-                <FormLabel>Feature Description: </FormLabel>
+                <FormLabel>User Story Description: </FormLabel>
                 <Textarea
                   value={description}
                   onChange={handleDescriptionChange}
                 />
               </FormControl>
               <Button w="100%" size="lg" onClick={handleSubmit}>
-                Create Feature
+                Create User Story
               </Button>
             </AccordionPanel>
           </>
@@ -154,4 +156,4 @@ const CreateFeatureAccordion = ({
   );
 };
 
-export default CreateFeatureAccordion;
+export default CreateUserStoryAccordion;

@@ -15,18 +15,21 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Task } from "../UserStories/UserStoryDetailsAccordion";
 
 type Props = {
   featureId: number;
   projectId: number;
   userStoryId: number;
+  setDevTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };
 
-const CreateTaskAccordion = ({ projectId, featureId, userStoryId }: Props) => {
-  console.log("PROJECT ID: ", projectId);
-  console.log("FEATURE ID: ", featureId);
-  console.log("USERSTORY ID: ", userStoryId);
-
+const CreateTaskAccordion = ({
+  projectId,
+  featureId,
+  userStoryId,
+  setDevTasks,
+}: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -60,6 +63,7 @@ const CreateTaskAccordion = ({ projectId, featureId, userStoryId }: Props) => {
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((response) => {
+          setDevTasks(response.data);
           setName("");
           setSubmitClickedName(false);
 

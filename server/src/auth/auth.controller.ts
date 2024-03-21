@@ -199,7 +199,13 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Post('create-task')
   createTask(@Body() taskDto: TaskDto, @Request() req) {
-    console.log('TASK DTO: ', taskDto, req.user.sub);
+    return this.authService.createTask(
+      taskDto.name,
+      req.user.sub,
+      taskDto.projectId,
+      taskDto.featureId,
+      taskDto.userStoryId,
+    );
   }
 
   @Post('reset-password')

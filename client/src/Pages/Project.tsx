@@ -20,6 +20,7 @@ const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
 const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
+  console.log("DATA:", data);
 
   const [features, setFeatures] = useState<Feature[]>(project.features);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +43,7 @@ const Project = () => {
                 {column.name}
               </Text>
               {features.map((feature) => {
+                feature.status = "To Do";
                 if (column.name === feature.status) {
                   return (
                     <Box

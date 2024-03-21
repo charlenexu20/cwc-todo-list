@@ -20,7 +20,6 @@ const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
 const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
-  console.log("DATA:", data);
 
   const [features, setFeatures] = useState<Feature[]>(project.features);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,7 +37,7 @@ const Project = () => {
       <Box display="flex" gap={10}>
         {columns.map((column) => {
           return (
-            <Box border="1px" flex={1} pt={4}>
+            <Box key={column.name} border="1px" flex={1} pt={4}>
               <Text textAlign="center" fontSize={20}>
                 {column.name}
               </Text>
@@ -58,6 +57,7 @@ const Project = () => {
                         setSelectedFeature(feature);
                       }}
                       _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
+                      key={feature.id}
                     >
                       <Text>{feature.name}</Text>
                       <Text>

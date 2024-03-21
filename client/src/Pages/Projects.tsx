@@ -38,6 +38,7 @@ const Projects = () => {
         {projects.map((project) => {
           return (
             <Box
+              key={project.id}
               display="flex"
               border="1px solid"
               p={4}

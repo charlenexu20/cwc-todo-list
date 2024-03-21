@@ -61,6 +61,7 @@ const FeatureModal = ({
             {userStories.map((story) => {
               return (
                 <UserStoryDetailsAccordion
+                  key={story.id}
                   name={story.name}
                   status={story.status}
                   description={story.description}

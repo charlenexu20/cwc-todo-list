@@ -37,6 +37,9 @@ const UserStoryDetailsAccordion = ({
 }: Props) => {
   const [devTasks, setDevTasks] = useState(tasks);
 
+  console.log("DEV TASKS:", devTasks);
+  console.log("TASKS:", tasks);
+
   return (
     <Accordion allowToggle>
       <AccordionItem border="1px">
@@ -58,6 +61,7 @@ const UserStoryDetailsAccordion = ({
           {devTasks && devTasks.length > 0 ? (
             devTasks.map((task) => (
               <Box
+                key={task.name}
                 display="flex"
                 justifyContent="space-between"
                 borderTop="1px"

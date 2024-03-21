@@ -5,15 +5,51 @@ import {
   AccordionIcon,
   AccordionPanel,
   Text,
+  Box,
+  Button,
 } from "@chakra-ui/react";
+import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 
 type Props = {
   name: string;
   status: string;
   description: string;
+  projectId: number;
+  featureId: number;
+  userStoryId: number;
 };
 
-const UserStoryDetailsAccordion = ({ name, status, description }: Props) => {
+const sampleDevTasks = [
+  {
+    name: "Developer Task 1",
+    status: "To Do",
+  },
+  {
+    name: "Developer Task 2",
+    status: "To Do",
+  },
+  {
+    name: "Developer Task 3",
+    status: "To Do",
+  },
+  {
+    name: "Developer Task 4",
+    status: "To Do",
+  },
+  {
+    name: "Developer Task 5",
+    status: "To Do",
+  },
+];
+
+const UserStoryDetailsAccordion = ({
+  name,
+  status,
+  description,
+  projectId,
+  featureId,
+  userStoryId,
+}: Props) => {
   return (
     <Accordion allowToggle>
       <AccordionItem border="1px">
@@ -26,8 +62,28 @@ const UserStoryDetailsAccordion = ({ name, status, description }: Props) => {
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={4} borderTop="1px">
-          {description}
+        <AccordionPanel borderTop="1px" p={0}>
+          <Box p={4}>{description}</Box>
+          {sampleDevTasks.map((task) => {
+            return (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                borderTop="1px"
+                alignItems="center"
+                px={4}
+                py={1}
+              >
+                <Text>{task.name}</Text>
+                <Button>{task.status}</Button>
+              </Box>
+            );
+          })}
+          <CreateTaskAccordion
+            featureId={featureId}
+            projectId={projectId}
+            userStoryId={userStoryId}
+          />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

@@ -98,6 +98,21 @@ export class UserStoryDto {
   featureId: number;
 }
 
+export class TaskDto {
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  name: string;
+
+  @IsNotEmpty()
+  projectId: number;
+
+  @IsNotEmpty()
+  featureId: number;
+
+  @IsNotEmpty()
+  userStoryId: number;
+}
+
 export class NewPasswordDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -179,6 +194,12 @@ export class AuthController {
       userStoryDto.projectId,
       userStoryDto.featureId,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-task')
+  createTask(@Body() taskDto: TaskDto, @Request() req) {
+    console.log('TASK DTO: ', taskDto, req.user.sub);
   }
 
   @Post('reset-password')

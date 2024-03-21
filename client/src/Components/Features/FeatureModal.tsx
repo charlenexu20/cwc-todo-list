@@ -24,6 +24,7 @@ export type UserStory = {
   name: string;
   description: string;
   status: string;
+  id: number;
 };
 
 const FeatureModal = ({
@@ -60,6 +61,9 @@ const FeatureModal = ({
                   name={story.name}
                   status={story.status}
                   description={story.description}
+                  projectId={projectId}
+                  featureId={featureId}
+                  userStoryId={story.id}
                 />
               );
             })}

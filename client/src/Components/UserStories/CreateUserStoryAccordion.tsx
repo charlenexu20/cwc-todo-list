@@ -22,11 +22,13 @@ type Props = {
   userStories: UserStory[];
   setUserStories: React.Dispatch<React.SetStateAction<UserStory[]>>;
   featureId: number;
+  projectId: number;
 };
 
 const CreateUserStoryAccordion = ({
   userStories,
   setUserStories,
+  projectId,
   featureId,
 }: Props) => {
   const toast = useToast();
@@ -54,15 +56,13 @@ const CreateUserStoryAccordion = ({
 
       const token = localStorage.getItem("token");
 
-      console.log("name: ", name);
-      console.log("description: ", description);
-
       axios
         .post(
           "http://localhost:3001/auth/create-user-story",
           {
             name,
             description,
+            projectId,
             featureId,
           },
           { headers: { Authorization: `Bearer ${token}` } },

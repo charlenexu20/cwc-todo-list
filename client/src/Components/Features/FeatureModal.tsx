@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import UserStoryDetailsAccordion from "../UserStories/UserStoryDetailsAccordion";
 import CreateUserStoryAccordion from "../UserStories/CreateUserStoryAccordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -16,6 +16,8 @@ type Props = {
   featureName: string;
   featureDescription: string;
   featureId: number;
+  projectId: number;
+  stories: UserStory[];
 };
 
 export type UserStory = {
@@ -24,42 +26,20 @@ export type UserStory = {
   status: string;
 };
 
-const sampleUserStories = [
-  {
-    name: "User Story",
-    description: " This is my user story description.",
-    status: "0/10",
-  },
-  {
-    name: "User Story",
-    description: " This is my user story description.",
-    status: "2/10",
-  },
-  {
-    name: "User Story",
-    description: " This is my user story description.",
-    status: "4/10",
-  },
-  {
-    name: "User Story",
-    description: " This is my user story description.",
-    status: "6/10",
-  },
-  {
-    name: "User Story",
-    description: " This is my user story description.",
-    status: "8/10",
-  },
-];
-
 const FeatureModal = ({
   isOpen,
   onClose,
   featureName,
   featureDescription,
   featureId,
+  projectId,
+  stories,
 }: Props) => {
-  const [userStories, setUserStories] = useState(sampleUserStories);
+  const [userStories, setUserStories] = useState(stories);
+
+  useEffect(() => {
+    setUserStories(stories);
+  }, [stories]);
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -74,12 +54,12 @@ const FeatureModal = ({
           </Box>
           <ModalCloseButton />
           <Box display="flex" flexDirection="column" gap={4}>
-            {sampleUserStories.map((story, index) => {
+            {userStories.map((story) => {
               return (
                 <UserStoryDetailsAccordion
-                  name={`${story.name} ${index + 1}`}
+                  name={story.name}
                   status={story.status}
-                  description={`${story.description} ${index + 1}`}
+                  description={story.description}
                 />
               );
             })}
@@ -87,6 +67,7 @@ const FeatureModal = ({
               userStories={userStories}
               setUserStories={setUserStories}
               featureId={featureId}
+              projectId={projectId}
             />
           </Box>
         </Box>

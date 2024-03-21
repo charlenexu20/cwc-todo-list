@@ -92,6 +92,9 @@ export class UserStoryDto {
   description: string;
 
   @IsNotEmpty()
+  projectId: number;
+
+  @IsNotEmpty()
   featureId: number;
 }
 
@@ -169,14 +172,13 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Post('create-user-story')
   createUserStory(@Body() userStoryDto: UserStoryDto, @Request() req) {
-    // return this.authService.createUserStory(
-    //   userStoryDto.name,
-    //   userStoryDto.description,
-    //   req.user.sub,
-    //   userStoryDto.featureId,
-    // );
-
-    console.log('USER STORY DTO: ', userStoryDto, req.user.sub);
+    return this.authService.createUserStory(
+      userStoryDto.name,
+      userStoryDto.description,
+      req.user.sub,
+      userStoryDto.projectId,
+      userStoryDto.featureId,
+    );
   }
 
   @Post('reset-password')

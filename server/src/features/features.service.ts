@@ -7,15 +7,18 @@ import { Repository } from 'typeorm';
 export class FeaturesService {
   constructor(
     @InjectRepository(Feature)
-    private featuressRepository: Repository<Feature>,
+    private featuresRepository: Repository<Feature>,
   ) {}
 
   async getProjectFeatures(id: number) {
-    return this.featuressRepository.find({ where: { project: { id } } });
+    return this.featuresRepository.find({
+      where: { project: { id } },
+      relations: ['userStories'],
+    });
   }
 
   async createFeature(name: string, description: string, projectId: number) {
-    await this.featuressRepository.save({
+    await this.featuresRepository.save({
       name,
       description,
       project: {

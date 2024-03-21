@@ -1,5 +1,12 @@
 import { Project } from 'src/projects/entities/project.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { UserStory } from 'src/userStories/entities/userStory.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Feature {
@@ -18,4 +25,8 @@ export class Feature {
 
   @Column({ default: 'To Do' })
   status: string;
+
+  // one feature => many userStories
+  @OneToMany(() => UserStory, (userStory) => userStory.feature)
+  userStories: UserStory[];
 }

@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import { Project as ProjectType } from "./Projects";
 import CreateFeatureAccordion from "../components/Features/CreateFeatureAccordion";
 import { useState } from "react";
-import FeatureModal from "../components/Features/FeatureModal";
+import FeatureModal, { UserStory } from "../components/Features/FeatureModal";
 
 export type Feature = {
   name: string;
@@ -12,6 +12,7 @@ export type Feature = {
   completedUserStories: number;
   description?: string;
   id: number;
+  userStories: UserStory[];
 };
 
 const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
@@ -20,10 +21,12 @@ const Project = () => {
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
 
-  const [features, setFeatures] = useState(project.features);
+  const [features, setFeatures] = useState<Feature[]>(project.features);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [selectedFeature, setSelectedFeature] = useState(features[0]);
+  const [selectedFeature, setSelectedFeature] = useState(
+    features.length > 0 ? features[0] : null,
+  );
 
   return (
     <Box m={10}>
@@ -78,15 +81,19 @@ const Project = () => {
           );
         })}
       </Box>
-      <FeatureModal
-        isOpen={isOpen}
-        onClose={onClose}
-        featureName={selectedFeature.name}
-        featureDescription={
-          selectedFeature.description || "There is no description..."
-        }
-        featureId={selectedFeature.id}
-      />
+      {selectedFeature && (
+        <FeatureModal
+          isOpen={isOpen}
+          onClose={onClose}
+          featureName={selectedFeature.name}
+          featureDescription={
+            selectedFeature.description || "There is no description..."
+          }
+          featureId={selectedFeature.id}
+          projectId={project.id}
+          stories={selectedFeature.userStories}
+        />
+      )}
     </Box>
   );
 };

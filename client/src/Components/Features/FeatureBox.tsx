@@ -27,7 +27,7 @@ const FeatureBox = ({ feature, projectId, setProject }: Props) => {
       >
         <Text>{feature.name}</Text>
         <Text>
-          {feature.completedUserStories} / {feature.userStoryCount}
+          {feature.completedUserStories}/{feature.userStoryCount}
         </Text>
       </Box>
       <FeatureModal

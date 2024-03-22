@@ -23,6 +23,8 @@ const Project = () => {
 
   const [project, setProject] = useState(loaderData);
 
+  console.log("PROJECT: ", project);
+
   return (
     <Box m={10}>
       <Box mb={20}>
@@ -37,10 +39,10 @@ const Project = () => {
                 {column.name}
               </Text>
               {project.features.map((feature) => {
-                feature.status = "To Do";
                 if (column.name === feature.status) {
                   return (
                     <FeatureBox
+                      key={feature.id}
                       feature={feature}
                       projectId={project.id}
                       setProject={setProject}

@@ -162,8 +162,7 @@ export class AuthService {
   async getUserProjects(userId: number) {
     const user = await this.getProfileData(userId);
     const projects = await this.projectsService.getUserProjects(userId);
-    console.log('USER: ', user);
-    console.log('PROJECT: ', projects);
+
     return {
       user,
       projects,
@@ -172,7 +171,7 @@ export class AuthService {
 
   async getProject(userId: number, id: number) {
     const projects = await this.projectsService.getUserProjects(userId);
-    return projects.filter((project) => project.id === id);
+    return projects.find((project) => project.id === id);
   }
 
   async createProject(name: string, description: string, userId: number) {
@@ -194,11 +193,8 @@ export class AuthService {
     // Check if the project is found
     if (project.id) {
       // If the project is found, create the feature
-      return await this.featuresService.createFeature(
-        name,
-        description,
-        projectId,
-      );
+      await this.featuresService.createFeature(name, description, projectId);
+      return await this.projectsService.getProjectById(projectId);
     } else {
       // If the project is not found, throw an UnauthorizedException
       throw new UnauthorizedException('project not found');
@@ -218,11 +214,12 @@ export class AuthService {
     const feature = features.find((feature) => feature.id === featureId);
 
     if (feature.id) {
-      return await this.userStoriesService.createUserStory(
+      await this.userStoriesService.createUserStory(
         name,
         description,
         featureId,
       );
+      return await this.projectsService.getProjectById(projectId);
     } else {
       throw new UnauthorizedException('feature not found');
     }
@@ -244,10 +241,9 @@ export class AuthService {
       (userStory) => userStory.id === userStoryId,
     );
 
-    console.log('USERSTORY: ', userStory);
-
     if (userStory.id) {
-      return await this.tasksService.createTask(name, userStoryId);
+      await this.tasksService.createTask(name, userStoryId);
+      return await this.projectsService.getProjectById(projectId);
     } else {
       throw new UnauthorizedException('user story not found');
     }

@@ -10,7 +10,7 @@ import UserStoryDetailsAccordion, {
   Task,
 } from "../UserStories/UserStoryDetailsAccordion";
 import CreateUserStoryAccordion from "../UserStories/CreateUserStoryAccordion";
-import { useEffect, useState } from "react";
+import { Project } from "../../pages/Projects";
 
 type Props = {
   isOpen: boolean;
@@ -20,6 +20,7 @@ type Props = {
   featureId: number;
   projectId: number;
   stories: UserStory[];
+  setProject: React.Dispatch<React.SetStateAction<Project>>;
 };
 
 export type UserStory = {
@@ -38,13 +39,8 @@ const FeatureModal = ({
   featureId,
   projectId,
   stories,
+  setProject,
 }: Props) => {
-  const [userStories, setUserStories] = useState(stories);
-
-  useEffect(() => {
-    setUserStories(stories);
-  }, [stories]);
-
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
       <ModalOverlay />
@@ -58,7 +54,7 @@ const FeatureModal = ({
           </Box>
           <ModalCloseButton />
           <Box display="flex" flexDirection="column" gap={4}>
-            {userStories.map((story) => {
+            {stories.map((story) => {
               return (
                 <UserStoryDetailsAccordion
                   key={story.id}
@@ -69,14 +65,14 @@ const FeatureModal = ({
                   featureId={featureId}
                   userStoryId={story.id}
                   tasks={story.tasks}
+                  setProject={setProject}
                 />
               );
             })}
             <CreateUserStoryAccordion
-              userStories={userStories}
-              setUserStories={setUserStories}
               featureId={featureId}
               projectId={projectId}
+              setProject={setProject}
             />
           </Box>
         </Box>

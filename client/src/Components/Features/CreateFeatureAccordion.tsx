@@ -17,18 +17,15 @@ import { useState } from "react";
 import axios from "axios";
 import { Feature } from "../../pages/Project";
 import { useNavigate } from "react-router-dom";
+import { Project } from "../../pages/Projects";
 
 type Props = {
   features: Feature[];
-  setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+  setProject: React.Dispatch<React.SetStateAction<Project>>;
   projectId: number;
 };
 
-const CreateFeatureAccordion = ({
-  features,
-  setFeatures,
-  projectId,
-}: Props) => {
+const CreateFeatureAccordion = ({ features, setProject, projectId }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -68,7 +65,8 @@ const CreateFeatureAccordion = ({
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((response) => {
-          setFeatures(response.data);
+          console.log("PROJECT: ", response.data);
+          setProject(response.data);
           setName("");
           setDescription("");
           setSubmitClickedName(false);

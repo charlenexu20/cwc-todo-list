@@ -15,21 +15,19 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
-import { UserStory } from "../Features/FeatureModal";
 import { useNavigate } from "react-router-dom";
+import { Project } from "../../pages/Projects";
 
 type Props = {
-  userStories: UserStory[];
-  setUserStories: React.Dispatch<React.SetStateAction<UserStory[]>>;
   featureId: number;
   projectId: number;
+  setProject: React.Dispatch<React.SetStateAction<Project>>;
 };
 
 const CreateUserStoryAccordion = ({
-  userStories,
-  setUserStories,
   projectId,
   featureId,
+  setProject,
 }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
@@ -68,7 +66,7 @@ const CreateUserStoryAccordion = ({
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((response) => {
-          setUserStories(response.data);
+          setProject(response.data);
           setName("");
           setDescription("");
           setSubmitClickedName(false);

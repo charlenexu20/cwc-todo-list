@@ -15,20 +15,20 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Task } from "../UserStories/UserStoryDetailsAccordion";
+import { Project } from "../../pages/Projects";
 
 type Props = {
   featureId: number;
   projectId: number;
   userStoryId: number;
-  setDevTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  setProject: React.Dispatch<React.SetStateAction<Project>>;
 };
 
 const CreateTaskAccordion = ({
   projectId,
   featureId,
   userStoryId,
-  setDevTasks,
+  setProject,
 }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
@@ -63,7 +63,8 @@ const CreateTaskAccordion = ({
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((response) => {
-          setDevTasks(response.data);
+          console.log("PROJECT: ", response.data);
+          setProject(response.data);
           setName("");
           setSubmitClickedName(false);
 

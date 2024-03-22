@@ -1,9 +1,10 @@
-import { Box, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { Project as ProjectType } from "./Projects";
 import CreateFeatureAccordion from "../components/Features/CreateFeatureAccordion";
 import { useState } from "react";
-import FeatureModal, { UserStory } from "../components/Features/FeatureModal";
+import { UserStory } from "../components/Features/FeatureModal";
+import FeatureBox from "../components/Features/FeatureBox";
 
 export type Feature = {
   name: string;
@@ -18,15 +19,9 @@ export type Feature = {
 const columns = [{ name: "To Do" }, { name: "In Progress" }, { name: "Done" }];
 
 const Project = () => {
-  const data = useLoaderData() as ProjectType[];
-  const project = data[0];
+  const loaderData = useLoaderData() as ProjectType;
 
-  const [features, setFeatures] = useState<Feature[]>(project.features);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [selectedFeature, setSelectedFeature] = useState(
-    features.length > 0 ? features[0] : null,
-  );
+  const [project, setProject] = useState(loaderData);
 
   return (
     <Box m={10}>
@@ -41,30 +36,15 @@ const Project = () => {
               <Text textAlign="center" fontSize={20}>
                 {column.name}
               </Text>
-              {features.map((feature) => {
+              {project.features.map((feature) => {
                 feature.status = "To Do";
                 if (column.name === feature.status) {
                   return (
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      border="1px"
-                      p={4}
-                      mt={4}
-                      mx={4}
-                      onClick={() => {
-                        onOpen();
-                        setSelectedFeature(feature);
-                      }}
-                      _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
-                      key={feature.id}
-                    >
-                      <Text>{feature.name}</Text>
-                      <Text>
-                        {feature.completedUserStories} /{" "}
-                        {feature.userStoryCount}
-                      </Text>
-                    </Box>
+                    <FeatureBox
+                      feature={feature}
+                      projectId={project.id}
+                      setProject={setProject}
+                    />
                   );
                 } else {
                   return null;
@@ -73,8 +53,8 @@ const Project = () => {
               <Box p={4}>
                 {column.name === "To Do" && (
                   <CreateFeatureAccordion
-                    features={features}
-                    setFeatures={setFeatures}
+                    features={project.features}
+                    setProject={setProject}
                     projectId={project.id}
                   />
                 )}
@@ -83,19 +63,6 @@ const Project = () => {
           );
         })}
       </Box>
-      {selectedFeature && (
-        <FeatureModal
-          isOpen={isOpen}
-          onClose={onClose}
-          featureName={selectedFeature.name}
-          featureDescription={
-            selectedFeature.description || "There is no description..."
-          }
-          featureId={selectedFeature.id}
-          projectId={project.id}
-          stories={selectedFeature.userStories}
-        />
-      )}
     </Box>
   );
 };

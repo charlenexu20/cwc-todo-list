@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
-import { useState } from "react";
+import { Project } from "../../pages/Projects";
 
 type Props = {
   name: string;
@@ -19,6 +19,7 @@ type Props = {
   featureId: number;
   userStoryId: number;
   tasks: Task[];
+  setProject: React.Dispatch<React.SetStateAction<Project>>;
 };
 
 export type Task = {
@@ -34,12 +35,8 @@ const UserStoryDetailsAccordion = ({
   featureId,
   userStoryId,
   tasks,
+  setProject,
 }: Props) => {
-  const [devTasks, setDevTasks] = useState(tasks);
-
-  console.log("DEV TASKS:", devTasks);
-  console.log("TASKS:", tasks);
-
   return (
     <Accordion allowToggle>
       <AccordionItem border="1px">
@@ -58,8 +55,8 @@ const UserStoryDetailsAccordion = ({
         */}
         <AccordionPanel borderTop="1px" p={0}>
           <Box p={4}>{description}</Box>
-          {devTasks && devTasks.length > 0 ? (
-            devTasks.map((task) => (
+          {tasks && tasks.length > 0 ? (
+            tasks.map((task) => (
               <Box
                 key={task.name}
                 display="flex"
@@ -89,7 +86,7 @@ const UserStoryDetailsAccordion = ({
             featureId={featureId}
             projectId={projectId}
             userStoryId={userStoryId}
-            setDevTasks={setDevTasks}
+            setProject={setProject}
           />
         </AccordionPanel>
       </AccordionItem>

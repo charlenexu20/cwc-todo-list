@@ -191,13 +191,13 @@ export class AuthService {
     const project = projects.find((project) => project.id === projectId);
 
     // Check if the project is found
-    if (project.id) {
+    if (project) {
       // If the project is found, create the feature
       await this.featuresService.createFeature(name, description, projectId);
       return await this.projectsService.getProjectById(projectId);
     } else {
       // If the project is not found, throw an UnauthorizedException
-      throw new UnauthorizedException('project not found');
+      throw new UnauthorizedException('Unauthorized');
     }
   }
 
@@ -210,18 +210,23 @@ export class AuthService {
   ) {
     const projects = await this.projectsService.getUserProjects(userId);
     const project = projects.find((project) => project.id === projectId);
-    const features = project.features;
-    const feature = features.find((feature) => feature.id === featureId);
 
-    if (feature.id) {
-      await this.userStoriesService.createUserStory(
-        name,
-        description,
-        featureId,
-      );
-      return await this.projectsService.getProjectById(projectId);
+    if (project) {
+      const features = project.features;
+      const feature = features.find((feature) => feature.id === featureId);
+
+      if (feature) {
+        await this.userStoriesService.createUserStory(
+          name,
+          description,
+          featureId,
+        );
+        return await this.projectsService.getProjectById(projectId);
+      } else {
+        throw new UnauthorizedException('Unauthorized');
+      }
     } else {
-      throw new UnauthorizedException('feature not found');
+      throw new UnauthorizedException('Unauthorized');
     }
   }
 
@@ -234,18 +239,28 @@ export class AuthService {
   ) {
     const projects = await this.projectsService.getUserProjects(userId);
     const project = projects.find((project) => project.id === projectId);
-    const features = project.features;
-    const feature = features.find((feature) => feature.id === featureId);
-    const userStories = feature.userStories;
-    const userStory = userStories.find(
-      (userStory) => userStory.id === userStoryId,
-    );
 
-    if (userStory.id) {
-      await this.tasksService.createTask(name, userStoryId);
-      return await this.projectsService.getProjectById(projectId);
+    if (project) {
+      const features = project.features;
+      const feature = features.find((feature) => feature.id === featureId);
+
+      if (feature) {
+        const userStories = feature.userStories;
+        const userStory = userStories.find(
+          (userStory) => userStory.id === userStoryId,
+        );
+
+        if (userStory) {
+          await this.tasksService.createTask(name, userStoryId);
+          return await this.projectsService.getProjectById(projectId);
+        } else {
+          throw new UnauthorizedException('Unauthorized');
+        }
+      } else {
+        throw new UnauthorizedException('Unauthorized');
+      }
     } else {
-      throw new UnauthorizedException('user story not found');
+      throw new UnauthorizedException('Unauthorized');
     }
   }
 }

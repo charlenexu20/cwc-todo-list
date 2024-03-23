@@ -9,11 +9,19 @@ import { JwtService } from '@nestjs/jwt';
 import { AccountDetailDto, LogInDto, SignUpDto } from './auth.controller';
 import { User } from 'src/users/entities/user.entity';
 import { MailService } from 'src/mail/mail.service';
+import { ProjectsService } from 'src/projects/projects.service';
+import { FeaturesService } from 'src/features/features.service';
+import { UserStoriesService } from 'src/userStories/userStories.service';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private projectsService: ProjectsService,
+    private featuresService: FeaturesService,
+    private userStoriesService: UserStoriesService,
+    private tasksService: TasksService,
     private mailService: MailService,
     private jwtService: JwtService,
   ) {}
@@ -149,5 +157,110 @@ export class AuthService {
 
   async deleteUser(id: number) {
     return await this.usersService.deleteUser(id);
+  }
+
+  async getUserProjects(userId: number) {
+    const user = await this.getProfileData(userId);
+    const projects = await this.projectsService.getUserProjects(userId);
+
+    return {
+      user,
+      projects,
+    };
+  }
+
+  async getProject(userId: number, id: number) {
+    const projects = await this.projectsService.getUserProjects(userId);
+    return projects.find((project) => project.id === id);
+  }
+
+  async createProject(name: string, description: string, userId: number) {
+    return await this.projectsService.createProject(name, description, userId);
+  }
+
+  async createFeature(
+    name: string,
+    description: string,
+    userId: number,
+    projectId: number,
+  ) {
+    // Retrieve projects associated with the user
+    const projects = await this.projectsService.getUserProjects(userId);
+
+    // Find the project with the specified ID
+    const project = projects.find((project) => project.id === projectId);
+
+    // Check if the project is found
+    if (project) {
+      // If the project is found, create the feature
+      await this.featuresService.createFeature(name, description, projectId);
+      return await this.projectsService.getProjectById(projectId);
+    } else {
+      // If the project is not found, throw an UnauthorizedException
+      throw new UnauthorizedException('Unauthorized');
+    }
+  }
+
+  async createUserStory(
+    name: string,
+    description: string,
+    userId: number,
+    projectId: number,
+    featureId: number,
+  ) {
+    const projects = await this.projectsService.getUserProjects(userId);
+    const project = projects.find((project) => project.id === projectId);
+
+    if (project) {
+      const features = project.features;
+      const feature = features.find((feature) => feature.id === featureId);
+
+      if (feature) {
+        await this.userStoriesService.createUserStory(
+          name,
+          description,
+          featureId,
+        );
+        return await this.projectsService.getProjectById(projectId);
+      } else {
+        throw new UnauthorizedException('Unauthorized');
+      }
+    } else {
+      throw new UnauthorizedException('Unauthorized');
+    }
+  }
+
+  async createTask(
+    name: string,
+    userId: number,
+    projectId: number,
+    featureId: number,
+    userStoryId: number,
+  ) {
+    const projects = await this.projectsService.getUserProjects(userId);
+    const project = projects.find((project) => project.id === projectId);
+
+    if (project) {
+      const features = project.features;
+      const feature = features.find((feature) => feature.id === featureId);
+
+      if (feature) {
+        const userStories = feature.userStories;
+        const userStory = userStories.find(
+          (userStory) => userStory.id === userStoryId,
+        );
+
+        if (userStory) {
+          await this.tasksService.createTask(name, userStoryId);
+          return await this.projectsService.getProjectById(projectId);
+        } else {
+          throw new UnauthorizedException('Unauthorized');
+        }
+      } else {
+        throw new UnauthorizedException('Unauthorized');
+      }
+    } else {
+      throw new UnauthorizedException('Unauthorized');
+    }
   }
 }

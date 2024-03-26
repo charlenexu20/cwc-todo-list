@@ -263,4 +263,13 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
   }
+
+  async updateTask(
+    field: string,
+    value: string,
+    userId: number,
+    taskId: number,
+  ) {
+    return await this.tasksService.updateTask(field, value, taskId);
+  }
 }

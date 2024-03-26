@@ -6,10 +6,10 @@ import {
   AccordionPanel,
   Text,
   Box,
-  Button,
 } from "@chakra-ui/react";
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
+import TaskBox from "../Tasks/TaskBox";
 
 type Props = {
   name: string;
@@ -25,6 +25,7 @@ type Props = {
 export type Task = {
   name: string;
   status: string;
+  id: number;
 };
 
 const UserStoryDetailsAccordion = ({
@@ -56,20 +57,7 @@ const UserStoryDetailsAccordion = ({
         <AccordionPanel borderTop="1px" p={0}>
           <Box p={4}>{description}</Box>
           {tasks && tasks.length > 0 ? (
-            tasks.map((task) => (
-              <Box
-                key={task.name}
-                display="flex"
-                justifyContent="space-between"
-                borderTop="1px"
-                alignItems="center"
-                px={4}
-                py={1}
-              >
-                <Text>{task.name}</Text>
-                <Button>{task.status}</Button>
-              </Box>
-            ))
+            tasks.map((task) => <TaskBox task={task} />)
           ) : (
             <Box
               display="flex"

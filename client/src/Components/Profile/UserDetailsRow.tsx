@@ -37,6 +37,7 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
           duration: 3000,
           isClosable: true,
         });
+        setValueState(value);
         return;
       }
     } else if (field === "Password" && valueState !== "") {
@@ -68,6 +69,9 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
           duration: 3000,
           isClosable: true,
         });
+        if (field !== "Password") {
+          setValueState(value);
+        }
         return;
       }
     }
@@ -87,7 +91,6 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((response) => {
-        console.log("RESPONSE: ", response.data);
         setData(response.data);
         toast({
           title: "Success",
@@ -98,7 +101,6 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
         });
       })
       .catch((error) => {
-        console.log("ERROR: ", error);
         toast({
           title: "Error",
           description:

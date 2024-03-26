@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
@@ -24,12 +24,31 @@ export class TasksService {
     return await this.getUserStoryTasks(userStoryId);
   }
 
-  async updateTask(field: string, value: string, taskId: number) {
+  async updateTask(
+    field: string,
+    value: string,
+    userId: number,
+    taskId: number,
+  ) {
     const taskToUpdate = await this.tasksRepository.findOne({
-      where: { id: taskId },
+      where: {
+        id: taskId,
+        // Navigate through the various entity relationships defined in the database schema
+        userStory: { feature: { project: { user: { id: userId } } } },
+      },
+      relations: [
+        'userStory',
+        'userStory.feature',
+        'userStory.feature.project',
+      ],
     });
-    taskToUpdate[field] = value;
-    const updateTask = await this.tasksRepository.save(taskToUpdate);
-    console.log('UPDATETASK: ', updateTask);
+
+    if (taskToUpdate) {
+      taskToUpdate[field] = value;
+      await this.tasksRepository.save(taskToUpdate);
+      return taskToUpdate.userStory.feature.project.id;
+    } else {
+      throw new BadRequestException('You cannot edit that task');
+    }
   }
 }

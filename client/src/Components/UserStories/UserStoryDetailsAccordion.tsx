@@ -57,7 +57,7 @@ const UserStoryDetailsAccordion = ({
         <AccordionPanel borderTop="1px" p={0}>
           <Box p={4}>{description}</Box>
           {tasks && tasks.length > 0 ? (
-            tasks.map((task) => <TaskBox task={task} />)
+            tasks.map((task) => <TaskBox task={task} setProject={setProject} />)
           ) : (
             <Box
               display="flex"

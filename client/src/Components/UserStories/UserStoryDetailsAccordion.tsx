@@ -10,6 +10,7 @@ import {
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
 import TaskBox from "../Tasks/TaskBox";
+import { useState } from "react";
 
 type Props = {
   name: string;
@@ -38,6 +39,7 @@ const UserStoryDetailsAccordion = ({
   tasks,
   setProject,
 }: Props) => {
+  const [storyStatus, setStoryStatus] = useState(status);
   return (
     <Accordion allowToggle>
       <AccordionItem border="1px">
@@ -46,7 +48,7 @@ const UserStoryDetailsAccordion = ({
             <Text flex={1} textAlign="left">
               {name}
             </Text>
-            <Text>{status}</Text>
+            <Text>{storyStatus}</Text>
             <AccordionIcon />
           </AccordionButton>
         </h2>
@@ -57,7 +59,9 @@ const UserStoryDetailsAccordion = ({
         <AccordionPanel borderTop="1px" p={0}>
           <Box p={4}>{description}</Box>
           {tasks && tasks.length > 0 ? (
-            tasks.map((task) => <TaskBox task={task} setProject={setProject} />)
+            tasks.map((task) => (
+              <TaskBox task={task} setStoryStatus={setStoryStatus} />
+            ))
           ) : (
             <Box
               display="flex"

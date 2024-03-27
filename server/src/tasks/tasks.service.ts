@@ -36,17 +36,13 @@ export class TasksService {
         // Navigate through the various entity relationships defined in the database schema
         userStory: { feature: { project: { user: { id: userId } } } },
       },
-      relations: [
-        'userStory',
-        'userStory.feature',
-        'userStory.feature.project',
-      ],
+      relations: ['userStory'],
     });
 
     if (taskToUpdate) {
       taskToUpdate[field] = value;
       await this.tasksRepository.save(taskToUpdate);
-      return taskToUpdate.userStory.feature.project.id;
+      return taskToUpdate.userStory.id;
     } else {
       throw new BadRequestException('You cannot edit that task');
     }

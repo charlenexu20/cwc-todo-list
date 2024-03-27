@@ -10,15 +10,14 @@ import { Task } from "../UserStories/UserStoryDetailsAccordion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Project } from "../../pages/Projects";
 import { CheckIcon, EditIcon } from "@chakra-ui/icons";
 
 type Props = {
   task: Task;
-  setProject: React.Dispatch<React.SetStateAction<Project>>;
+  setStoryStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const TaskBox = ({ task, setProject }: Props) => {
+const TaskBox = ({ task, setStoryStatus }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -60,7 +59,7 @@ const TaskBox = ({ task, setProject }: Props) => {
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((response) => {
-        setProject(response.data);
+        setStoryStatus(response.data);
         setUpdateName(false);
 
         toast({

@@ -14,7 +14,7 @@ import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
 import TaskBox from "../Tasks/TaskBox";
 import { useState } from "react";
-import { CheckIcon, EditIcon } from "@chakra-ui/icons";
+import { CheckIcon, ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -88,7 +88,7 @@ const UserStoryDetailsAccordion = ({
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((response) => {
-        console.log("RESPONSE: ", response.data);
+        setProject(response.data);
         setUpdateStoryName(false);
 
         toast({
@@ -123,73 +123,87 @@ const UserStoryDetailsAccordion = ({
   };
 
   return (
-    <Accordion allowToggle>
-      <AccordionItem border="1px">
-        <h2>
-          <AccordionButton display="flex" justifyContent="space-between" p={4}>
-            {updateStoryName ? (
-              <Input
-                flex={1}
-                h="40px"
-                value={storyName}
-                onChange={onChangeName}
-                type="text"
-                mr={4}
-              />
-            ) : (
-              <Text flex={1} textAlign="left">
-                {name}
-              </Text>
-            )}
-            <IconButton
-              mr={4}
-              aria-label="Edit Name"
-              icon={updateStoryName ? <CheckIcon /> : <EditIcon />}
-              size="md"
-              onClick={
-                updateStoryName
-                  ? () => {
-                      updateStory("name", storyName);
-                    }
-                  : handleEditClick
-              }
+    <>
+      {updateStoryName ? (
+        <Box border="1px" display="flex" p={4} alignItems="center">
+          <Box flex={1} mr={4}>
+            <Input
+              h="40px"
+              value={storyName}
+              onChange={onChangeName}
+              type="text"
             />
+          </Box>
 
-            <Text>{storyStatus}</Text>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
-
-        {/*
-          The code will only attempt to map over devTasks if it exists and has at least one element. If devTasks is empty or undefined, it will render a message indicating that no tasks are available, avoiding the error.
-        */}
-        <AccordionPanel borderTop="1px" p={0}>
-          <Box p={4}>{description}</Box>
-          {tasks && tasks.length > 0 ? (
-            tasks.map((task) => (
-              <TaskBox task={task} setStoryStatus={setStoryStatus} />
-            ))
-          ) : (
-            <Box
-              display="flex"
-              justifyContent="center"
-              borderTop="1px"
-              alignItems="center"
-              px={4}
-              py={1}
-            >
-              <Text>No tasks available</Text>
-            </Box>
-          )}
-          <CreateTaskAccordion
-            featureId={featureId}
-            projectId={projectId}
-            userStoryId={userStoryId}
-            setProject={setProject}
+          <IconButton
+            mr={4}
+            aria-label="Edit Name"
+            icon={<CheckIcon />}
+            size="md"
+            onClick={() => {
+              updateStory("name", storyName);
+            }}
           />
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+          <Text>{storyStatus}</Text>
+          <ChevronDownIcon boxSize={5} />
+        </Box>
+      ) : (
+        <Accordion allowToggle>
+          <AccordionItem border="1px">
+            <h2>
+              <AccordionButton
+                display="flex"
+                justifyContent="space-between"
+                p={4}
+              >
+                <Text flex={1} textAlign="left">
+                  {name}
+                </Text>
+                <IconButton
+                  mr={4}
+                  aria-label="Edit Name"
+                  icon={<EditIcon />}
+                  size="md"
+                  onClick={handleEditClick}
+                />
+                <Text>{storyStatus}</Text>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+
+            {/*
+          The code will only attempt to map over devTasks if it exists and has at least one element. If devTasks is empty or undefined, it will render a message indicating that no tasks are available, avoiding the error.
+          */}
+
+            <AccordionPanel borderTop="1px" p={0}>
+              <Box p={4}>{description}</Box>
+              {tasks && tasks.length > 0 ? (
+                tasks.map((task) => (
+                  <TaskBox task={task} setStoryStatus={setStoryStatus} />
+                ))
+              ) : (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  borderTop="1px"
+                  alignItems="center"
+                  px={4}
+                  py={1}
+                >
+                  <Text>No tasks available</Text>
+                </Box>
+              )}
+              <CreateTaskAccordion
+                featureId={featureId}
+                projectId={projectId}
+                userStoryId={userStoryId}
+                setProject={setProject}
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      )}
+    </>
   );
 };
 

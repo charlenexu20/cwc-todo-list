@@ -230,6 +230,21 @@ export class AuthService {
     }
   }
 
+  async updateUserStory(
+    field: string,
+    value: string,
+    userId: number,
+    userStoryId: number,
+  ) {
+    const projectId = await this.userStoriesService.updateUserStory(
+      field,
+      value,
+      userId,
+      userStoryId,
+    );
+    return await this.projectsService.getProjectById(projectId);
+  }
+
   async createTask(
     name: string,
     userId: number,

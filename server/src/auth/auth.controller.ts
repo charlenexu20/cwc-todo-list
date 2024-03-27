@@ -226,15 +226,12 @@ export class AuthController {
     @Body() updateUserStoryDto: UpdateUserStoryDto,
     @Request() req,
   ) {
-    console.log('DTO: ', updateUserStoryDto);
-    console.log('USER ID: ', req.user.sub);
-
-    // return this.authService.updateUserStory(
-    //   updateUserStory.field,
-    //   updateUserStory.value,
-    //   req.user.sub,
-    //   updateUserStory.userStoryId,
-    // );
+    return this.authService.updateUserStory(
+      updateUserStoryDto.field,
+      updateUserStoryDto.value,
+      req.user.sub,
+      updateUserStoryDto.userStoryId,
+    );
   }
 
   @UseGuards(AuthGuard)

@@ -8,6 +8,7 @@ import {
   Box,
   Input,
   IconButton,
+  Textarea,
   useToast,
 } from "@chakra-ui/react";
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
@@ -51,13 +52,23 @@ const UserStoryDetailsAccordion = ({
   const [storyStatus, setStoryStatus] = useState(status);
   const [updateStoryName, setUpdateStoryName] = useState(false);
   const [storyName, setStoryName] = useState(name);
+  const [updateStoryDescription, setUpdateStoryDescription] = useState(false);
+  const [storyDescription, setStoryDescription] = useState(description);
 
   const onChangeName = (e: any) => {
     setStoryName(e.target.value);
   };
 
-  const handleEditClick = () => {
+  const onChangeDescription = (e: any) => {
+    setStoryDescription(e.target.value);
+  };
+
+  const onClickEditName = () => {
     setUpdateStoryName(!updateStoryName);
+  };
+
+  const onClickEditDescription = () => {
+    setUpdateStoryDescription(!updateStoryDescription);
   };
 
   const updateStory = (field: "name" | "description", value: string) => {
@@ -90,6 +101,7 @@ const UserStoryDetailsAccordion = ({
       .then((response) => {
         setProject(response.data);
         setUpdateStoryName(false);
+        setUpdateStoryDescription(false);
 
         toast({
           title: "Success",
@@ -100,6 +112,7 @@ const UserStoryDetailsAccordion = ({
         });
       })
       .catch((error) => {
+        console.log("ERROR: ", error);
         // Add error handling if error is token expired
         if (error.response.data.message === "Unauthorized") {
           toast({
@@ -164,7 +177,7 @@ const UserStoryDetailsAccordion = ({
                   aria-label="Edit Name"
                   icon={<EditIcon />}
                   size="md"
-                  onClick={handleEditClick}
+                  onClick={onClickEditName}
                 />
                 <Text>{storyStatus}</Text>
                 <AccordionIcon />
@@ -176,7 +189,33 @@ const UserStoryDetailsAccordion = ({
           */}
 
             <AccordionPanel borderTop="1px" p={0}>
-              <Box p={4}>{description}</Box>
+              <Box display="flex" px={4} py={10} alignItems="center">
+                {updateStoryDescription ? (
+                  <Box flex={1} mr={4}>
+                    <Textarea
+                      h="40px"
+                      value={storyDescription}
+                      onChange={onChangeDescription}
+                    />
+                  </Box>
+                ) : (
+                  <Box flex={1}>{description}</Box>
+                )}
+                <IconButton
+                  mr={4}
+                  aria-label="Edit Description"
+                  icon={updateStoryDescription ? <CheckIcon /> : <EditIcon />}
+                  size="md"
+                  onClick={
+                    updateStoryDescription
+                      ? () => {
+                          updateStory("description", storyDescription);
+                        }
+                      : onClickEditDescription
+                  }
+                />
+              </Box>
+
               {tasks && tasks.length > 0 ? (
                 tasks.map((task) => (
                   <TaskBox task={task} setStoryStatus={setStoryStatus} />

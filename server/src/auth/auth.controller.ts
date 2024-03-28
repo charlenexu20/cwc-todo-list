@@ -69,6 +69,18 @@ export class ProjectDto {
   description: string;
 }
 
+export class UpdateProjectDto {
+  @IsNotEmpty()
+  field: string;
+
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  value: string;
+
+  @IsNotEmpty()
+  projectId: number;
+}
+
 export class FeatureDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -206,6 +218,17 @@ export class AuthController {
       projectDto.name,
       projectDto.description,
       req.user.sub,
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('update-project')
+  updateProject(@Body() updateProjectDto: UpdateProjectDto, @Request() req) {
+    return this.authService.updateProject(
+      updateProjectDto.field,
+      updateProjectDto.value,
+      req.user.sub,
+      updateProjectDto.projectId,
     );
   }
 

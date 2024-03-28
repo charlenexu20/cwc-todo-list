@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feature } from './entities/feature.entity';
 import { Repository } from 'typeorm';
@@ -26,5 +26,30 @@ export class FeaturesService {
       },
     });
     return await this.getProjectFeatures(projectId);
+  }
+
+  async updateFeature(
+    field: string,
+    value: string,
+    userId: number,
+    featureId: number,
+  ) {
+    const featureToUpdate = await this.featuresRepository.findOne({
+      where: {
+        id: featureId,
+        // Navigate through the various entity relationships defined in the database schema
+        project: { user: { id: userId } },
+      },
+      relations: ['project'],
+    });
+
+    if (featureToUpdate) {
+      featureToUpdate[field] = value;
+      const updatedFeature =
+        await this.featuresRepository.save(featureToUpdate);
+      return updatedFeature.project.id;
+    } else {
+      throw new BadRequestException('You cannot edit this feature');
+    }
   }
 }

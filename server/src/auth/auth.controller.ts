@@ -82,6 +82,18 @@ export class FeatureDto {
   projectId: number;
 }
 
+export class UpdateFeatureDto {
+  @IsNotEmpty()
+  field: string;
+
+  @IsNotEmpty()
+  @Transform((params) => sanitizeHtml(params.value))
+  value: string;
+
+  @IsNotEmpty()
+  featureId: number;
+}
+
 export class UserStoryDto {
   @IsNotEmpty()
   @Transform((params) => sanitizeHtml(params.value))
@@ -205,6 +217,17 @@ export class AuthController {
       featureDto.description,
       req.user.sub,
       featureDto.projectId,
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('update-feature')
+  updateFeature(@Body() updateFeatureDto: UpdateFeatureDto, @Request() req) {
+    return this.authService.updateFeature(
+      updateFeatureDto.field,
+      updateFeatureDto.value,
+      req.user.sub,
+      updateFeatureDto.featureId,
     );
   }
 

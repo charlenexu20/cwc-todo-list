@@ -230,6 +230,21 @@ export class AuthService {
     }
   }
 
+  async updateUserStory(
+    field: string,
+    value: string,
+    userId: number,
+    userStoryId: number,
+  ) {
+    const projectId = await this.userStoriesService.updateUserStory(
+      field,
+      value,
+      userId,
+      userStoryId,
+    );
+    return await this.projectsService.getProjectById(projectId);
+  }
+
   async createTask(
     name: string,
     userId: number,
@@ -262,5 +277,20 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Unauthorized');
     }
+  }
+
+  async updateTask(
+    field: string,
+    value: string,
+    userId: number,
+    taskId: number,
+  ) {
+    const userStoryId = await this.tasksService.updateTask(
+      field,
+      value,
+      userId,
+      taskId,
+    );
+    return await this.userStoriesService.getUserStoryStatusById(userStoryId);
   }
 }

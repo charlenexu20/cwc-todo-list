@@ -14,7 +14,7 @@ import {
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
 import TaskBox from "../Tasks/TaskBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckIcon, ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,13 @@ const UserStoryDetailsAccordion = ({
   const [storyName, setStoryName] = useState(name);
   const [updateStoryDescription, setUpdateStoryDescription] = useState(false);
   const [storyDescription, setStoryDescription] = useState(description);
+  const [taskList, setTaskList] = useState(tasks);
+
+  // Temporary fix for data not updating correctly
+  useEffect(() => {
+    setStoryStatus(status);
+    setTaskList(tasks);
+  }, [status, tasks]);
 
   const onChangeName = (e: any) => {
     setStoryName(e.target.value);
@@ -216,9 +223,13 @@ const UserStoryDetailsAccordion = ({
                 />
               </Box>
 
-              {tasks && tasks.length > 0 ? (
-                tasks.map((task) => (
-                  <TaskBox task={task} setStoryStatus={setStoryStatus} />
+              {taskList && taskList.length > 0 ? (
+                taskList.map((task) => (
+                  <TaskBox
+                    task={task}
+                    setStoryStatus={setStoryStatus}
+                    setTaskList={setTaskList}
+                  />
                 ))
               ) : (
                 <Box

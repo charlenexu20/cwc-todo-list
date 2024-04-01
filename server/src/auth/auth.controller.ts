@@ -303,6 +303,12 @@ export class AuthController {
     );
   }
 
+  @UseGuards(AuthGuard)
+  @Post('delete-task')
+  deleteTask(@Body('taskId') taskId: number, @Request() req) {
+    return this.authService.deleteTask(taskId, req.user.sub);
+  }
+
   @Post('reset-password')
   sendResetPasswordEmail(@Body() body: Email) {
     return this.authService.sendResetPasswordEmail(body.email);

@@ -178,6 +178,20 @@ export class AuthService {
     return await this.projectsService.createProject(name, description, userId);
   }
 
+  async updateProject(
+    field: string,
+    value: string,
+    userId: number,
+    projectId: number,
+  ) {
+    return await this.projectsService.updateProject(
+      field,
+      value,
+      userId,
+      projectId,
+    );
+  }
+
   async createFeature(
     name: string,
     description: string,
@@ -199,6 +213,21 @@ export class AuthService {
       // If the project is not found, throw an UnauthorizedException
       throw new UnauthorizedException('Unauthorized');
     }
+  }
+
+  async updateFeature(
+    field: string,
+    value: string,
+    userId: number,
+    featureId: number,
+  ) {
+    const projectId = await this.featuresService.updateFeature(
+      field,
+      value,
+      userId,
+      featureId,
+    );
+    return await this.projectsService.getProjectById(projectId);
   }
 
   async createUserStory(
@@ -228,6 +257,21 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Unauthorized');
     }
+  }
+
+  async updateUserStory(
+    field: string,
+    value: string,
+    userId: number,
+    userStoryId: number,
+  ) {
+    const projectId = await this.userStoriesService.updateUserStory(
+      field,
+      value,
+      userId,
+      userStoryId,
+    );
+    return await this.projectsService.getProjectById(projectId);
   }
 
   async createTask(
@@ -262,5 +306,20 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Unauthorized');
     }
+  }
+
+  async updateTask(
+    field: string,
+    value: string,
+    userId: number,
+    taskId: number,
+  ) {
+    const userStoryId = await this.tasksService.updateTask(
+      field,
+      value,
+      userId,
+      taskId,
+    );
+    return await this.userStoriesService.getUserStoryStatusById(userStoryId);
   }
 }

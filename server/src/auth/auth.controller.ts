@@ -281,6 +281,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Post('delete-user-story')
+  deleteUserStory(@Body('userStoryId') userStoryId: number, @Request() req) {
+    return this.authService.deleteUserStory(userStoryId, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('create-task')
   createTask(@Body() taskDto: TaskDto, @Request() req) {
     return this.authService.createTask(

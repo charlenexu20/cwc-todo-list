@@ -73,7 +73,7 @@ const CreateUserStoryAccordion = ({
 
           toast({
             title: "Success",
-            description: "Your feature has been created!",
+            description: "Your user story has been created!",
             status: "success",
             duration: 3000,
             isClosable: true,

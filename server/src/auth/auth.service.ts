@@ -274,6 +274,14 @@ export class AuthService {
     return await this.projectsService.getProjectById(projectId);
   }
 
+  async deleteUserStory(userStoryId: number, userId: number) {
+    const projectId = await this.userStoriesService.deleteUserStory(
+      userStoryId,
+      userId,
+    );
+    return await this.projectsService.getProjectById(projectId);
+  }
+
   async createTask(
     name: string,
     userId: number,

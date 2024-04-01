@@ -15,7 +15,12 @@ import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
 import TaskBox from "../Tasks/TaskBox";
 import { useEffect, useState } from "react";
-import { CheckIcon, ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  DeleteIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -119,7 +124,6 @@ const UserStoryDetailsAccordion = ({
         });
       })
       .catch((error) => {
-        console.log("ERROR: ", error);
         // Add error handling if error is token expired
         if (error.response.data.message === "Unauthorized") {
           toast({
@@ -142,6 +146,51 @@ const UserStoryDetailsAccordion = ({
       });
   };
 
+  const deleteStory = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .post(
+        "http://localhost:3001/auth/delete-user-story",
+        {
+          userStoryId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      .then((response) => {
+        setProject(response.data);
+
+        toast({
+          title: "Success",
+          description: `Your user story has been deleted!`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        // Add error handling if error is token expired
+        if (error.response.data.message === "Unauthorized") {
+          toast({
+            title: "Error",
+            description: "Your session has expired, please log in again!",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+          navigate("/log-in");
+        } else {
+          toast({
+            title: "Error",
+            description: `There was an error deleting your user story. Please try again.`,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      });
+  };
+
   return (
     <>
       {updateStoryName ? (
@@ -154,7 +203,6 @@ const UserStoryDetailsAccordion = ({
               type="text"
             />
           </Box>
-
           <IconButton
             mr={4}
             aria-label="Edit Name"
@@ -164,7 +212,14 @@ const UserStoryDetailsAccordion = ({
               updateStory("name", storyName);
             }}
           />
-          <Text>{storyStatus}</Text>
+          <Text mr={4}>{storyStatus}</Text>
+          <IconButton
+            mr={4}
+            aria-label="Delete User Story"
+            icon={<DeleteIcon />}
+            size="md"
+            onClick={deleteStory}
+          />
           <ChevronDownIcon boxSize={5} />
         </Box>
       ) : (
@@ -186,15 +241,17 @@ const UserStoryDetailsAccordion = ({
                   size="md"
                   onClick={onClickEditName}
                 />
-                <Text>{storyStatus}</Text>
+                <Text mr={4}>{storyStatus}</Text>
+                <IconButton
+                  mr={4}
+                  aria-label="Delete User Story"
+                  icon={<DeleteIcon />}
+                  size="md"
+                  onClick={deleteStory}
+                />
                 <AccordionIcon />
               </AccordionButton>
             </h2>
-
-            {/*
-          The code will only attempt to map over devTasks if it exists and has at least one element. If devTasks is empty or undefined, it will render a message indicating that no tasks are available, avoiding the error.
-          */}
-
             <AccordionPanel borderTop="1px" p={0}>
               <Box display="flex" px={4} py={10} alignItems="center">
                 {updateStoryDescription ? (

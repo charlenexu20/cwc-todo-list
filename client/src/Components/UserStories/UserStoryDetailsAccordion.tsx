@@ -63,6 +63,7 @@ const UserStoryDetailsAccordion = ({
   const [updateStoryDescription, setUpdateStoryDescription] = useState(false);
   const [storyDescription, setStoryDescription] = useState(description);
   const [taskList, setTaskList] = useState(tasks);
+  const [startDelete, setStartDelete] = useState(false);
 
   // Temporary fix for data not updating correctly
   useEffect(() => {
@@ -198,25 +199,42 @@ const UserStoryDetailsAccordion = ({
 
   return (
     <>
-      {updateStoryName ? (
+      {updateStoryName || startDelete ? (
         <Box border="1px" display="flex" p={4} alignItems="center">
-          <Box flex={1} mr={4}>
-            <Input
-              h="40px"
-              value={storyName}
-              onChange={onChangeName}
-              type="text"
-            />
-          </Box>
-          <IconButton
-            mr={4}
-            aria-label="Edit Name"
-            icon={<CheckIcon />}
-            size="md"
-            onClick={() => {
-              updateStory("name", storyName);
-            }}
-          />
+          {updateStoryName ? (
+            <>
+              <Box flex={1} mr={4}>
+                <Input
+                  h="40px"
+                  value={storyName}
+                  onChange={onChangeName}
+                  type="text"
+                />
+              </Box>
+              <IconButton
+                mr={4}
+                aria-label="Edit Name"
+                icon={<CheckIcon />}
+                size="md"
+                onClick={() => {
+                  updateStory("name", storyName);
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Text flex={1} textAlign="left">
+                {name}
+              </Text>
+              <IconButton
+                mr={4}
+                aria-label="Edit Name"
+                icon={<EditIcon />}
+                size="md"
+                onClick={onClickEditName}
+              />
+            </>
+          )}
           <Text mr={4}>{storyStatus}</Text>
           <IconButton
             mr={4}
@@ -252,7 +270,10 @@ const UserStoryDetailsAccordion = ({
                   aria-label="Delete User Story"
                   icon={<DeleteIcon />}
                   size="md"
-                  onClick={onOpen}
+                  onClick={() => {
+                    setStartDelete(true);
+                    onOpen();
+                  }}
                 />
                 <AccordionIcon />
               </AccordionButton>
@@ -317,7 +338,10 @@ const UserStoryDetailsAccordion = ({
       )}
       <DeleteModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          onClose();
+          setStartDelete(false);
+        }}
         deleteItem={deleteStory}
         itemType={"user story"}
       />

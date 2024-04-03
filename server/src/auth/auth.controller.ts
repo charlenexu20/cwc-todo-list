@@ -255,6 +255,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Post('delete-feature')
+  deleteFeature(@Body('featureId') featureId: number, @Request() req) {
+    return this.authService.deleteFeature(featureId, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('create-user-story')
   createUserStory(@Body() userStoryDto: UserStoryDto, @Request() req) {
     return this.authService.createUserStory(

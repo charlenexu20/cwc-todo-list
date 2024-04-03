@@ -52,4 +52,21 @@ export class FeaturesService {
       throw new BadRequestException('You cannot edit this feature');
     }
   }
+
+  async deleteFeature(featureId: number, userId: number) {
+    const featureToDelete = await this.featuresRepository.findOne({
+      where: {
+        id: featureId,
+        project: { user: { id: userId } },
+      },
+      relations: ['project'],
+    });
+
+    if (featureToDelete) {
+      await this.featuresRepository.delete(featureToDelete);
+      return featureToDelete.project.id;
+    } else {
+      throw new BadRequestException('You cannot delete that feature');
+    }
+  }
 }

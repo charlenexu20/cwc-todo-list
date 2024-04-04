@@ -150,4 +150,19 @@ export class ProjectsService {
       throw new BadRequestException('You cannot edit this project');
     }
   }
+
+  async deleteProject(projectId: number, userId: number) {
+    const projectToDelete = await this.projectsRepository.findOne({
+      where: {
+        id: projectId,
+        user: { id: userId },
+      },
+    });
+
+    if (projectToDelete) {
+      return await this.projectsRepository.delete(projectToDelete);
+    } else {
+      throw new BadRequestException('You cannot delete that project');
+    }
+  }
 }

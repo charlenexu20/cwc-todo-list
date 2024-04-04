@@ -233,6 +233,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Post('delete-project')
+  deleteProject(@Body('projectId') projectId: number, @Request() req) {
+    return this.authService.deleteProject(projectId, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('create-feature')
   createFeature(@Body() featureDto: FeatureDto, @Request() req) {
     return this.authService.createFeature(

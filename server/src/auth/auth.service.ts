@@ -192,6 +192,10 @@ export class AuthService {
     );
   }
 
+  async deleteProject(projectId: number, userId: number) {
+    return await this.projectsService.deleteProject(projectId, userId);
+  }
+
   async createFeature(
     name: string,
     description: string,

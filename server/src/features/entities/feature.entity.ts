@@ -14,7 +14,9 @@ export class Feature {
   id: number;
 
   // foreign key: many features => one project
-  @ManyToOne(() => Project, (project) => project.features)
+  @ManyToOne(() => Project, (project) => project.features, {
+    onDelete: 'CASCADE',
+  })
   project: Project;
 
   @Column()

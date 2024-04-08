@@ -10,14 +10,21 @@ import {
   IconButton,
   Textarea,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import CreateTaskAccordion from "../Tasks/CreateTaskAccordion";
 import { Project } from "../../pages/Projects";
 import TaskBox from "../Tasks/TaskBox";
-import { useState } from "react";
-import { CheckIcon, ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  DeleteIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "../DeleteModal";
 
 type Props = {
   name: string;
@@ -48,12 +55,21 @@ const UserStoryDetailsAccordion = ({
 }: Props) => {
   const toast = useToast();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [storyStatus, setStoryStatus] = useState(status);
   const [updateStoryName, setUpdateStoryName] = useState(false);
   const [storyName, setStoryName] = useState(name);
   const [updateStoryDescription, setUpdateStoryDescription] = useState(false);
   const [storyDescription, setStoryDescription] = useState(description);
+  const [taskList, setTaskList] = useState(tasks);
+  const [startDelete, setStartDelete] = useState(false);
+
+  // Temporary fix for data not updating correctly
+  useEffect(() => {
+    setStoryStatus(status);
+    setTaskList(tasks);
+  }, [status, tasks]);
 
   const onChangeName = (e: any) => {
     setStoryName(e.target.value);
@@ -112,7 +128,6 @@ const UserStoryDetailsAccordion = ({
         });
       })
       .catch((error) => {
-        console.log("ERROR: ", error);
         // Add error handling if error is token expired
         if (error.response.data.message === "Unauthorized") {
           toast({
@@ -135,29 +150,99 @@ const UserStoryDetailsAccordion = ({
       });
   };
 
+  const deleteStory = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .post(
+        "http://localhost:3001/auth/delete-user-story",
+        {
+          userStoryId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      .then((response) => {
+        setProject(response.data);
+
+        toast({
+          title: "Success",
+          description: `Your user story has been deleted!`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        // Add error handling if error is token expired
+        if (error.response.data.message === "Unauthorized") {
+          toast({
+            title: "Error",
+            description: "Your session has expired, please log in again!",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+          navigate("/log-in");
+        } else {
+          toast({
+            title: "Error",
+            description: `There was an error deleting your user story. Please try again.`,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      });
+
+    onClose();
+  };
+
   return (
     <>
-      {updateStoryName ? (
+      {updateStoryName || startDelete ? (
         <Box border="1px" display="flex" p={4} alignItems="center">
-          <Box flex={1} mr={4}>
-            <Input
-              h="40px"
-              value={storyName}
-              onChange={onChangeName}
-              type="text"
-            />
-          </Box>
-
+          {updateStoryName ? (
+            <>
+              <Box flex={1} mr={4}>
+                <Input
+                  h="40px"
+                  value={storyName}
+                  onChange={onChangeName}
+                  type="text"
+                />
+              </Box>
+              <IconButton
+                mr={4}
+                aria-label="Edit Name"
+                icon={<CheckIcon />}
+                size="md"
+                onClick={() => {
+                  updateStory("name", storyName);
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Text flex={1} textAlign="left">
+                {name}
+              </Text>
+              <IconButton
+                mr={4}
+                aria-label="Edit Name"
+                icon={<EditIcon />}
+                size="md"
+                onClick={onClickEditName}
+              />
+            </>
+          )}
+          <Text mr={4}>{storyStatus}</Text>
           <IconButton
             mr={4}
-            aria-label="Edit Name"
-            icon={<CheckIcon />}
+            aria-label="Delete User Story"
+            icon={<DeleteIcon />}
             size="md"
-            onClick={() => {
-              updateStory("name", storyName);
-            }}
+            onClick={onOpen}
           />
-          <Text>{storyStatus}</Text>
           <ChevronDownIcon boxSize={5} />
         </Box>
       ) : (
@@ -179,15 +264,20 @@ const UserStoryDetailsAccordion = ({
                   size="md"
                   onClick={onClickEditName}
                 />
-                <Text>{storyStatus}</Text>
+                <Text mr={4}>{storyStatus}</Text>
+                <IconButton
+                  mr={4}
+                  aria-label="Delete User Story"
+                  icon={<DeleteIcon />}
+                  size="md"
+                  onClick={() => {
+                    setStartDelete(true);
+                    onOpen();
+                  }}
+                />
                 <AccordionIcon />
               </AccordionButton>
             </h2>
-
-            {/*
-          The code will only attempt to map over devTasks if it exists and has at least one element. If devTasks is empty or undefined, it will render a message indicating that no tasks are available, avoiding the error.
-          */}
-
             <AccordionPanel borderTop="1px" p={0}>
               <Box display="flex" px={4} py={10} alignItems="center">
                 {updateStoryDescription ? (
@@ -216,9 +306,13 @@ const UserStoryDetailsAccordion = ({
                 />
               </Box>
 
-              {tasks && tasks.length > 0 ? (
-                tasks.map((task) => (
-                  <TaskBox task={task} setStoryStatus={setStoryStatus} />
+              {taskList && taskList.length > 0 ? (
+                taskList.map((task) => (
+                  <TaskBox
+                    task={task}
+                    setStoryStatus={setStoryStatus}
+                    setTaskList={setTaskList}
+                  />
                 ))
               ) : (
                 <Box
@@ -242,6 +336,15 @@ const UserStoryDetailsAccordion = ({
           </AccordionItem>
         </Accordion>
       )}
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          setStartDelete(false);
+        }}
+        deleteItem={deleteStory}
+        itemType={"user story"}
+      />
     </>
   );
 };

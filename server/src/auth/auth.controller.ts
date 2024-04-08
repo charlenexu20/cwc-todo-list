@@ -233,6 +233,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Post('delete-project')
+  deleteProject(@Body('projectId') projectId: number, @Request() req) {
+    return this.authService.deleteProject(projectId, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('create-feature')
   createFeature(@Body() featureDto: FeatureDto, @Request() req) {
     return this.authService.createFeature(
@@ -252,6 +258,12 @@ export class AuthController {
       req.user.sub,
       updateFeatureDto.featureId,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('delete-feature')
+  deleteFeature(@Body('featureId') featureId: number, @Request() req) {
+    return this.authService.deleteFeature(featureId, req.user.sub);
   }
 
   @UseGuards(AuthGuard)
@@ -281,6 +293,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Post('delete-user-story')
+  deleteUserStory(@Body('userStoryId') userStoryId: number, @Request() req) {
+    return this.authService.deleteUserStory(userStoryId, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
   @Post('create-task')
   createTask(@Body() taskDto: TaskDto, @Request() req) {
     return this.authService.createTask(
@@ -301,6 +319,12 @@ export class AuthController {
       req.user.sub,
       updateTaskDto.taskId,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('delete-task')
+  deleteTask(@Body('taskId') taskId: number, @Request() req) {
+    return this.authService.deleteTask(taskId, req.user.sub);
   }
 
   @Post('reset-password')

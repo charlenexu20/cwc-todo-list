@@ -7,7 +7,10 @@ export class Task {
   id: number;
 
   // foreign key: many tasks => one userStory
-  @ManyToOne(() => UserStory, (userStory) => userStory.tasks)
+  @ManyToOne(() => UserStory, (userStory) => userStory.tasks, {
+    // if a userstory is deleted, all related tasks should also be deleted.
+    onDelete: 'CASCADE',
+  })
   userStory: UserStory;
 
   @Column()

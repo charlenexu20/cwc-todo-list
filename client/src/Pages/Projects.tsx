@@ -1,9 +1,10 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Box, Heading } from "@chakra-ui/react";
+import { useLoaderData } from "react-router-dom";
 import { Data } from "./Profile";
 import CreateProjectAccordion from "../components/Projects/CreateProjectAccordion";
 import { useState } from "react";
 import { Feature } from "./Project";
+import ProjectBox from "../components/Projects/ProjectBox";
 
 export type Project = {
   id: number;
@@ -19,15 +20,10 @@ type LoaderData = {
 };
 
 const Projects = () => {
-  const navigate = useNavigate();
   const data = useLoaderData() as LoaderData;
   const user = data.user as Data;
 
   const [projects, setProjects] = useState(data.projects);
-
-  const goToProject = (id: number) => {
-    navigate(`/project/${id}`);
-  };
 
   return (
     <Box mt={20}>
@@ -36,27 +32,7 @@ const Projects = () => {
       </Heading>
       <Box m={10}>
         {projects.map((project) => {
-          return (
-            <Box
-              key={project.id}
-              display="flex"
-              border="1px solid"
-              p={4}
-              mb={6}
-              onClick={() => {
-                goToProject(project.id);
-              }}
-              _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
-            >
-              <Text w="15%">{project.name}</Text>
-              <Text noOfLines={1} flex={1}>
-                {project.description}
-              </Text>
-              <Text w="15%" ml={10}>
-                {project.status}
-              </Text>
-            </Box>
-          );
+          return <ProjectBox project={project} />;
         })}
         <CreateProjectAccordion projects={projects} setProjects={setProjects} />
       </Box>

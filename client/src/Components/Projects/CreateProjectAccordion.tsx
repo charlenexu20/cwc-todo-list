@@ -99,28 +99,36 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
 
   return (
     <Accordion allowToggle index={isOpen ? 0 : 1}>
-      <AccordionItem border="1px solid">
+      <AccordionItem>
         {({ isExpanded }) => (
           <>
             <h2>
-              <AccordionButton onClick={() => setIsOpen(!isOpen)} h="56px">
+              <AccordionButton
+                onClick={() => setIsOpen(!isOpen)}
+                h="56px"
+                _hover={
+                  isExpanded
+                    ? {
+                        transform: "scale(1)",
+                      }
+                    : {
+                        transform: "scale(1.005)",
+                      }
+                }
+                borderBottomRadius={isExpanded ? "none" : "md"}
+                layerStyle="accordionButton"
+              >
                 {isExpanded ? (
-                  <MinusIcon fontSize="12px" />
+                  <MinusIcon fontSize="12px" color="#fffffe" />
                 ) : (
-                  <AddIcon fontSize="12px" />
+                  <AddIcon fontSize="12px" color="#fffffe" />
                 )}
-                <Box
-                  as="span"
-                  flex="1"
-                  textAlign="left"
-                  ml={3}
-                  layerStyle="text"
-                >
+                <Box as="span" flex="1" textAlign="left" ml={3} color="#fffffe">
                   Add a project
                 </Box>
               </AccordionButton>
             </h2>
-            <AccordionPanel pb={4} borderTop="1px solid">
+            <AccordionPanel pb={4} bgColor="#fffffe" borderBottomRadius="md">
               <FormControl isInvalid={isErrorName} isRequired mb={4}>
                 <FormLabel>Project Name: </FormLabel>
                 <Input
@@ -129,6 +137,7 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
                   value={name}
                   onChange={handleNameChange}
                   layerStyle="text"
+                  border="1px solid #001858"
                 />
                 {!isErrorName ? null : (
                   <FormErrorMessage>
@@ -142,9 +151,15 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
                   value={description}
                   onChange={handleDescriptionChange}
                   layerStyle="text"
+                  border="1px solid #001858"
                 />
               </FormControl>
-              <Button w="100%" size="lg" onClick={handleSubmit}>
+              <Button
+                size="lg"
+                onClick={handleSubmit}
+                layerStyle="createButton"
+                _hover={{ bgColor: "#8bd3dd", color: "#fef6e4" }}
+              >
                 Create Project
               </Button>
             </AccordionPanel>

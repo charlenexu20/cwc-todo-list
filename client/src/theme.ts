@@ -19,6 +19,25 @@ export const theme = extendTheme({
     text: {
       color: "#172c66",
     },
+    boxButton: {
+      border: "1px solid #001858",
+      borderRadius: "md",
+      backgroundColor: "#fffffe",
+      boxShadow: "md",
+      _hover: { cursor: "pointer", transform: "scale(1.005)" },
+      _active: { transform: "scale(1)" },
+    },
+    createButton: {
+      w: "100%",
+      border: "3px solid #001858",
+      bgColor: "#fffffe",
+      color: "#001858",
+    },
+    accordionButton: {
+      bgColor: "#001858",
+      borderTopRadius: "md",
+      _active: { transform: "scale(1)" },
+    },
   },
   components: {
     Heading: {

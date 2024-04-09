@@ -166,8 +166,8 @@ const SignUp = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Register
       </Heading>
       <Box
@@ -185,6 +185,7 @@ const SignUp = () => {
             size="lg"
             value={name}
             onChange={handleNameChange}
+            layerStyle="text"
           />
           {!isErrorName ? null : (
             <FormErrorMessage>Please enter your full name.</FormErrorMessage>
@@ -198,6 +199,7 @@ const SignUp = () => {
             size="lg"
             value={email}
             onChange={handleEmailChange}
+            layerStyle="text"
           />
           {!isErrorEmail ? null : (
             <FormErrorMessage>
@@ -213,6 +215,7 @@ const SignUp = () => {
             size="lg"
             value={username}
             onChange={handleUsernameChange}
+            layerStyle="text"
           />
           {!isErrorUsername ? null : (
             <FormErrorMessage>Please enter a username.</FormErrorMessage>
@@ -228,6 +231,7 @@ const SignUp = () => {
               size="lg"
               value={password}
               onChange={handlePasswordChange}
+              layerStyle="text"
             />
 
             <InputRightElement width="4.5rem">

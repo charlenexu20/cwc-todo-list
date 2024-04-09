@@ -15,16 +15,16 @@ type Props = {
 const Header = ({ loggedIn }: Props) => {
   return (
     <Box display="flex" alignItems="center">
-      <Box p={4} display="flex" gap={4} alignItems="center">
+      <Box p={4} display="flex" gap={4} alignItems="center" flex={1}>
         <Image
           borderRadius="full"
           boxSize="70px"
           src="https://i.pinimg.com/originals/8d/dc/8f/8ddc8f3de64883ab8ad6d139878dfdeb.jpg"
           alt="temp logo"
         />
-        <Heading fontSize={26}>Project Planning Tool</Heading>
+        <Heading>Project Planning Tool</Heading>
       </Box>
-      <Box display="flex" justifyContent="space-around" width="70%">
+      <Box display="flex" justifyContent="space-around" width="50%">
         {pages.map((page) => {
           if (
             (loggedIn && page.showWhenLoggedIn) ||

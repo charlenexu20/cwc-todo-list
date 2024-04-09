@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Heading,
   IconButton,
   Input,
   Modal,
@@ -209,9 +210,9 @@ const FeatureModal = ({
                   />
                 </Box>
               ) : (
-                <Text fontSize={20} mr={4}>
+                <Heading fontSize={28} mr={4}>
                   {featureName}
-                </Text>
+                </Heading>
               )}
               <IconButton
                 mr={4}
@@ -235,6 +236,7 @@ const FeatureModal = ({
                     h="40px"
                     value={description}
                     onChange={onChangeDescription}
+                    layerStyle="text"
                   />
                 </Box>
               ) : (

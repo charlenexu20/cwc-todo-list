@@ -172,6 +172,7 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
             value={taskName}
             onChange={handleNameChange}
             type="text"
+            layerStyle="text"
           />
         ) : (
           <Text flex={1}>{task.name}</Text>

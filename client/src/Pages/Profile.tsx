@@ -67,17 +67,17 @@ const Profile = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Account Details
       </Heading>
       <Text textAlign="center">
-        Hello, {data.name}! You can manage your account details.
+        Hello, {data.name}! You can manage your account details here.
       </Text>
-      <Box display="flex" gap={20} w="60%" py={20} m="0 auto">
+      <Box display="flex" gap={10} w="60%" py={20} m="0 auto">
         {/* User photo */}
         <Box display="flex" alignItems="center">
-          <Avatar bg="blue.200" size="2xl" name={data.name} />
+          <Avatar bg="#8bd3dd" size="2xl" name={data.name} />
         </Box>
         {/* User account details */}
         <Box display="flex" flexDirection="column" w="100%" gap={4}>

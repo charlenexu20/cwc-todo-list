@@ -98,6 +98,7 @@ const ResetPassword = () => {
             size="lg"
             value={password}
             onChange={handlePasswordChange}
+            layerStyle="text"
           />
           {!isErrorPassword ? null : (
             <FormErrorMessage>This field is required</FormErrorMessage>
@@ -111,6 +112,7 @@ const ResetPassword = () => {
             size="lg"
             value={secondPassword}
             onChange={handlePSecondasswordChange}
+            layerStyle="text"
           />
           {!isErrorSecondPassword ? null : (
             <FormErrorMessage>Passwords must match</FormErrorMessage>

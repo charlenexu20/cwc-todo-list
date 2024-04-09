@@ -209,6 +209,7 @@ const UserStoryDetailsAccordion = ({
                   value={storyName}
                   onChange={onChangeName}
                   type="text"
+                  layerStyle="text"
                 />
               </Box>
               <IconButton
@@ -286,10 +287,13 @@ const UserStoryDetailsAccordion = ({
                       h="40px"
                       value={storyDescription}
                       onChange={onChangeDescription}
+                      layerStyle="text"
                     />
                   </Box>
                 ) : (
-                  <Box flex={1}>{description}</Box>
+                  <Box flex={1} layerStyle="text">
+                    {description}
+                  </Box>
                 )}
                 <IconButton
                   mr={4}

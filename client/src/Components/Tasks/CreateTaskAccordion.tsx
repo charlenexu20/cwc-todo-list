@@ -113,7 +113,13 @@ const CreateTaskAccordion = ({
                 ) : (
                   <AddIcon fontSize="12px" />
                 )}
-                <Box as="span" flex="1" textAlign="left" ml={3}>
+                <Box
+                  as="span"
+                  flex="1"
+                  textAlign="left"
+                  ml={3}
+                  layerStyle="text"
+                >
                   Add a task
                 </Box>
               </AccordionButton>

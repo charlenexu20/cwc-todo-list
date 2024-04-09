@@ -103,8 +103,8 @@ const LogIn = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Login
       </Heading>
       <Box
@@ -122,6 +122,7 @@ const LogIn = () => {
             size="lg"
             value={username}
             onChange={handleUsernameChange}
+            layerStyle="text"
           />
           {!isErrorUsername ? null : (
             <FormErrorMessage>Please enter a username.</FormErrorMessage>
@@ -137,6 +138,7 @@ const LogIn = () => {
               size="lg"
               value={password}
               onChange={handlePasswordChange}
+              layerStyle="text"
             />
 
             <InputRightElement width="4.5rem">
@@ -153,7 +155,12 @@ const LogIn = () => {
           LOGIN
         </Button>
         <Box w="100%" display="flex" lineHeight="40px">
-          <Link href="#" onClick={onOpen} textDecorationLine="underline">
+          <Link
+            href="#"
+            onClick={onOpen}
+            textDecorationLine="underline"
+            layerStyle="text"
+          >
             Forgot your password?
           </Link>
           <Text paddingInline={4}>/</Text>

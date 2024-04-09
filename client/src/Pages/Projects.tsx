@@ -30,8 +30,8 @@ const Projects = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4} fontSize={20}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         {user.name}'s Projects
       </Heading>
       <Box m={10}>

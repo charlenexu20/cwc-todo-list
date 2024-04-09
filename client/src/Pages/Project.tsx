@@ -175,7 +175,7 @@ const Project = () => {
   };
 
   return (
-    <Box m={10}>
+    <Box mx={10} mt={20}>
       <Box mb={20} display="flex" justifyContent="space-between">
         <Box flex={1}>
           <Box display="flex" alignItems="center" mb={4}>
@@ -189,7 +189,9 @@ const Project = () => {
                 />
               </Box>
             ) : (
-              <Heading mr={4}>{project.name}</Heading>
+              <Heading mr={4} fontSize={28}>
+                {project.name}
+              </Heading>
             )}
             <IconButton
               mr={4}

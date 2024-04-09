@@ -109,7 +109,13 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
                 ) : (
                   <AddIcon fontSize="12px" />
                 )}
-                <Box as="span" flex="1" textAlign="left" ml={3}>
+                <Box
+                  as="span"
+                  flex="1"
+                  textAlign="left"
+                  ml={3}
+                  layerStyle="text"
+                >
                   Add a project
                 </Box>
               </AccordionButton>
@@ -122,6 +128,7 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
                   size="lg"
                   value={name}
                   onChange={handleNameChange}
+                  layerStyle="text"
                 />
                 {!isErrorName ? null : (
                   <FormErrorMessage>
@@ -134,6 +141,7 @@ const CreateProjectAccordion = ({ projects, setProjects }: Props) => {
                 <Textarea
                   value={description}
                   onChange={handleDescriptionChange}
+                  layerStyle="text"
                 />
               </FormControl>
               <Button w="100%" size="lg" onClick={handleSubmit}>

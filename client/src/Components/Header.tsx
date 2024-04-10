@@ -32,7 +32,7 @@ const Header = ({ loggedIn }: Props) => {
           ) {
             return (
               <Link to={page.path} key={page.name}>
-                <Box>{page.name.toUpperCase()}</Box>
+                <Box layerStyle="text">{page.name}</Box>
               </Link>
             );
           } else {

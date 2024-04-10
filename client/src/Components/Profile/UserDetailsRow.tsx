@@ -124,6 +124,7 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
           value={valueState}
           onChange={handleValueChange}
           type={field === "Password" ? "password" : "text"}
+          layerStyle="text"
         />
       ) : (
         <Text flex={1} lineHeight="32px">
@@ -134,6 +135,9 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
         aria-label="Edit Name"
         icon={updateField ? <CheckIcon /> : <EditIcon />}
         size="sm"
+        color="#001858"
+        colorScheme="brand"
+        _hover={{ bgColor: "#fac2a5", color: "#001858" }}
         onClick={updateField ? handleCheckClick : handleEditClick}
       />
     </Box>

@@ -57,13 +57,12 @@ const FeatureBox = ({ feature, projectId, setProject }: Props) => {
       <Box
         display="flex"
         justifyContent="space-between"
-        border="1px"
         p={4}
         mt={4}
         mx={4}
         onClick={onOpen}
-        _hover={{ cursor: "pointer", bgColor: "blackAlpha.200" }}
         key={feature.id}
+        layerStyle="boxButton"
       >
         <Text>{feature.name}</Text>
         <Text>

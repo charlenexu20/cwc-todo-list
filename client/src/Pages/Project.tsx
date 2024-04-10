@@ -11,13 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Project as ProjectType } from "./Projects";
-import CreateFeatureAccordion from "../components/Features/CreateFeatureAccordion";
 import { useState } from "react";
 import { UserStory } from "../components/Features/FeatureModal";
-import FeatureBox from "../components/Features/FeatureBox";
 import { CheckIcon, EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import DeleteModal from "../components/DeleteModal";
+import StatusColumn, { Column } from "../components/Project/StatusColumn";
 
 export type Feature = {
   name: string;
@@ -186,6 +185,7 @@ const Project = () => {
                   value={projectName}
                   onChange={onChangeName}
                   type="text"
+                  layerStyle="text"
                 />
               </Box>
             ) : (
@@ -197,7 +197,9 @@ const Project = () => {
               mr={4}
               aria-label="Edit Name"
               icon={updateProjectName ? <CheckIcon /> : <EditIcon />}
-              size="md"
+              color="#001858"
+              colorScheme="brand"
+              _hover={{ bgColor: "#fac2a5", color: "#001858" }}
               onClick={
                 updateProjectName
                   ? () => {
@@ -214,6 +216,7 @@ const Project = () => {
                   h="40px"
                   value={projectDescription}
                   onChange={onChangeDescription}
+                  layerStyle="text"
                 />
               </Box>
             ) : (
@@ -225,7 +228,9 @@ const Project = () => {
               mr={4}
               aria-label="Edit Description"
               icon={updateProjectDescription ? <CheckIcon /> : <EditIcon />}
-              size="md"
+              colorScheme="brand"
+              color="#001858"
+              _hover={{ bgColor: "#fac2a5", color: "#001858" }}
               onClick={
                 updateProjectDescription
                   ? () => {
@@ -236,39 +241,18 @@ const Project = () => {
             />
           </Box>
         </Box>
-        <Button onClick={onOpen}>Delete Project</Button>
+        <Button onClick={onOpen} variant="action-button">
+          Delete Project
+        </Button>
       </Box>
       <Box display="flex" gap={10}>
-        {columns.map((column) => {
+        {columns.map((column: Column) => {
           return (
-            <Box key={column.name} border="1px" flex={1} pt={4}>
-              <Text textAlign="center" fontSize={20}>
-                {column.name}
-              </Text>
-              {project.features.map((feature) => {
-                if (column.name === feature.status) {
-                  return (
-                    <FeatureBox
-                      key={feature.id}
-                      feature={feature}
-                      projectId={project.id}
-                      setProject={setProject}
-                    />
-                  );
-                } else {
-                  return null;
-                }
-              })}
-              <Box p={4}>
-                {column.name === "To Do" && (
-                  <CreateFeatureAccordion
-                    features={project.features}
-                    setProject={setProject}
-                    projectId={project.id}
-                  />
-                )}
-              </Box>
-            </Box>
+            <StatusColumn
+              column={column}
+              project={project}
+              setProject={setProject}
+            />
           );
         })}
       </Box>

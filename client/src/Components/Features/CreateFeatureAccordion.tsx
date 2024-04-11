@@ -112,7 +112,7 @@ const CreateFeatureAccordion = ({ features, setProject, projectId }: Props) => {
             <h2>
               <AccordionButton
                 onClick={() => setIsOpen(!isOpen)}
-                h="56px"
+                h="58px"
                 _hover={
                   isExpanded
                     ? {

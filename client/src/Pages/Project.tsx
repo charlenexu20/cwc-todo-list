@@ -197,9 +197,10 @@ const Project = () => {
               mr={4}
               aria-label="Edit Name"
               icon={updateProjectName ? <CheckIcon /> : <EditIcon />}
+              size="md"
+              bgColor="transparent"
               color="#001858"
-              colorScheme="brand"
-              _hover={{ bgColor: "#fac2a5", color: "#001858" }}
+              _hover={{ bgColor: "#fac2a5" }}
               onClick={
                 updateProjectName
                   ? () => {
@@ -228,9 +229,10 @@ const Project = () => {
               mr={4}
               aria-label="Edit Description"
               icon={updateProjectDescription ? <CheckIcon /> : <EditIcon />}
-              colorScheme="brand"
+              size="md"
+              bgColor="transparent"
               color="#001858"
-              _hover={{ bgColor: "#fac2a5", color: "#001858" }}
+              _hover={{ bgColor: "#fac2a5" }}
               onClick={
                 updateProjectDescription
                   ? () => {
@@ -241,7 +243,7 @@ const Project = () => {
             />
           </Box>
         </Box>
-        <Button onClick={onOpen} variant="action-button">
+        <Button onClick={onOpen} variant="action-button" size="md">
           Delete Project
         </Button>
       </Box>

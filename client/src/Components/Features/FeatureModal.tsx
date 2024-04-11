@@ -207,6 +207,7 @@ const FeatureModal = ({
                     value={name}
                     onChange={onChangeName}
                     type="text"
+                    layerStyle="text"
                   />
                 </Box>
               ) : (
@@ -219,6 +220,9 @@ const FeatureModal = ({
                 aria-label="Edit Name"
                 icon={updateFeatureName ? <CheckIcon /> : <EditIcon />}
                 size="md"
+                bgColor="transparent"
+                color="#001858"
+                _hover={{ bgColor: "#fac2a5" }}
                 onClick={
                   updateFeatureName
                     ? () => {
@@ -247,6 +251,9 @@ const FeatureModal = ({
                 aria-label="Edit Description"
                 icon={updateFeatureDescription ? <CheckIcon /> : <EditIcon />}
                 size="md"
+                bgColor="transparent"
+                color="#001858"
+                _hover={{ bgColor: "#fac2a5" }}
                 onClick={
                   updateFeatureDescription
                     ? () => {
@@ -283,7 +290,7 @@ const FeatureModal = ({
           </Box>
         </Box>
 
-        <Button m={10} onClick={onOpenDelete}>
+        <Button m={10} onClick={onOpenDelete} variant="action-button">
           Delete Feature
         </Button>
       </ModalContent>

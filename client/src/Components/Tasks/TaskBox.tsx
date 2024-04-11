@@ -158,11 +158,14 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
       key={task.name}
       display="flex"
       justifyContent="space-between"
-      borderTop="1px"
+      border="1px solid #172c66"
+      borderRadius="md"
+      backgroundColor="#fffffe"
+      boxShadow="md"
       alignItems="center"
-      px={4}
-      py={2}
+      p={4}
       gap={4}
+      h="58px"
     >
       <Box flex={1}>
         {updateName ? (
@@ -182,6 +185,8 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         aria-label="Edit Name"
         icon={updateName ? <CheckIcon /> : <EditIcon />}
         size="md"
+        colorScheme="brand"
+        color="#001858"
         onClick={
           updateName
             ? () => {
@@ -191,7 +196,13 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         }
       />
 
-      <Button w="118px" onClick={toggleTaskStatus}>
+      <Button
+        w="118px"
+        onClick={toggleTaskStatus}
+        colorScheme="brand"
+        color="#001858"
+        size="md"
+      >
         {taskStatus}
       </Button>
 
@@ -199,6 +210,8 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         aria-label="Delete Task"
         icon={<DeleteIcon />}
         size="md"
+        colorScheme="brand"
+        color="#001858"
         onClick={deleteTask}
       />
     </Box>

@@ -56,7 +56,9 @@ const DeleteModal = ({ isOpen, onClose, itemType, deleteItem }: Props) => {
               deleting all associated {getAssociatedItems()}.
             </Text>
           </Box>
-          <Button onClick={deleteItem}>Delete {capitalizeItemType()}</Button>
+          <Button onClick={deleteItem} variant="action-button">
+            Delete {capitalizeItemType()}
+          </Button>
         </ModalContent>
       </Modal>
     </>

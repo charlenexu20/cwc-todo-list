@@ -14,7 +14,8 @@ export const theme = extendTheme({
   },
   colors: {
     brand: {
-      500: "#f3d2c1",
+      500: "#f3d2c1", // Active color
+      600: "#fac2a5", // Hover color
     },
   },
   layerStyles: {
@@ -36,16 +37,6 @@ export const theme = extendTheme({
       },
       _active: { transform: "scale(1)" },
     },
-    // actionButton: {
-    //   border: "3px solid #001858",
-    //   bgColor: "#f3d2c1",
-    //   color: "#001858",
-    // },
-    // editButton: {
-    //   border: "1px solid #001858",
-    //   bgColor: "#f3d2c1",
-    //   color: "#001858",
-    // },
     accordionButton: {
       bgColor: "#d77372",
       borderTopRadius: "md",
@@ -86,24 +77,12 @@ export const theme = extendTheme({
         "action-button": {
           bgColor: "#f3d2c1",
           color: "#001858",
-          _hover: { bgColor: "#fac2a5", color: "#001858" },
+          _hover: { bgColor: "#fac2a5" },
           // boxShadow: "0 0 2px 2px #efdfde",
         },
       },
-    },
-    IconButton: {
-      baseStyle: {
-        bgColor: "#f3d2c1",
-        color: "#001858",
-        _hover: { bgColor: "#8bd3dd", color: "#fef6e4" },
-      },
-      variants: {
-        "edit-button": {
-          bgColor: "#f3d2c1",
-          color: "#001858",
-          _hover: { bgColor: "#8bd3dd", color: "#fef6e4" },
-          // boxShadow: "0 0 2px 2px #efdfde",
-        },
+      defaultProps: {
+        size: "lg",
       },
     },
   },

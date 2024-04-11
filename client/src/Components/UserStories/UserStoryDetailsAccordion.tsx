@@ -200,7 +200,13 @@ const UserStoryDetailsAccordion = ({
   return (
     <>
       {updateStoryName || startDelete ? (
-        <Box border="1px" display="flex" p={4} alignItems="center">
+        <Box
+          border="1px"
+          display="flex"
+          p={4}
+          alignItems="center"
+          borderRadius="md"
+        >
           {updateStoryName ? (
             <>
               <Box flex={1} mr={4}>
@@ -217,6 +223,8 @@ const UserStoryDetailsAccordion = ({
                 aria-label="Edit Name"
                 icon={<CheckIcon />}
                 size="md"
+                colorScheme="brand"
+                color="#001858"
                 onClick={() => {
                   updateStory("name", storyName);
                 }}
@@ -232,6 +240,8 @@ const UserStoryDetailsAccordion = ({
                 aria-label="Edit Name"
                 icon={<EditIcon />}
                 size="md"
+                colorScheme="brand"
+                color="#001858"
                 onClick={onClickEditName}
               />
             </>
@@ -242,18 +252,21 @@ const UserStoryDetailsAccordion = ({
             aria-label="Delete User Story"
             icon={<DeleteIcon />}
             size="md"
+            colorScheme="brand"
+            color="#001858"
             onClick={onOpen}
           />
           <ChevronDownIcon boxSize={5} />
         </Box>
       ) : (
         <Accordion allowToggle>
-          <AccordionItem border="1px">
+          <AccordionItem border="1px" borderRadius="md">
             <h2>
               <AccordionButton
                 display="flex"
                 justifyContent="space-between"
                 p={4}
+                h="58px"
               >
                 <Text flex={1} textAlign="left">
                   {name}
@@ -263,6 +276,8 @@ const UserStoryDetailsAccordion = ({
                   aria-label="Edit Name"
                   icon={<EditIcon />}
                   size="md"
+                  colorScheme="brand"
+                  color="#001858"
                   onClick={onClickEditName}
                 />
                 <Text mr={4}>{storyStatus}</Text>
@@ -271,6 +286,8 @@ const UserStoryDetailsAccordion = ({
                   aria-label="Delete User Story"
                   icon={<DeleteIcon />}
                   size="md"
+                  colorScheme="brand"
+                  color="#001858"
                   onClick={() => {
                     setStartDelete(true);
                     onOpen();
@@ -280,7 +297,13 @@ const UserStoryDetailsAccordion = ({
               </AccordionButton>
             </h2>
             <AccordionPanel borderTop="1px" p={0}>
-              <Box display="flex" px={4} py={10} alignItems="center">
+              <Box
+                display="flex"
+                px={4}
+                py={10}
+                alignItems="center"
+                borderBottom="1px"
+              >
                 {updateStoryDescription ? (
                   <Box flex={1} mr={4}>
                     <Textarea
@@ -300,6 +323,8 @@ const UserStoryDetailsAccordion = ({
                   aria-label="Edit Description"
                   icon={updateStoryDescription ? <CheckIcon /> : <EditIcon />}
                   size="md"
+                  colorScheme="brand"
+                  color="#001858"
                   onClick={
                     updateStoryDescription
                       ? () => {
@@ -309,33 +334,37 @@ const UserStoryDetailsAccordion = ({
                   }
                 />
               </Box>
-
-              {taskList && taskList.length > 0 ? (
-                taskList.map((task) => (
-                  <TaskBox
-                    task={task}
-                    setStoryStatus={setStoryStatus}
-                    setTaskList={setTaskList}
-                  />
-                ))
-              ) : (
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  borderTop="1px"
-                  alignItems="center"
-                  px={4}
-                  py={1}
-                >
-                  <Text>No tasks available</Text>
-                </Box>
-              )}
-              <CreateTaskAccordion
-                featureId={featureId}
-                projectId={projectId}
-                userStoryId={userStoryId}
-                setProject={setProject}
-              />
+              <Box m={5} display="flex" flexDirection="column" gap={4}>
+                {taskList && taskList.length > 0 ? (
+                  taskList.map((task) => (
+                    <TaskBox
+                      task={task}
+                      setStoryStatus={setStoryStatus}
+                      setTaskList={setTaskList}
+                    />
+                  ))
+                ) : (
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    border="1px solid #172c66"
+                    borderRadius="md"
+                    backgroundColor="#fffffe"
+                    boxShadow="md"
+                    alignItems="center"
+                    px={4}
+                    py={4}
+                  >
+                    <Text>No tasks available</Text>
+                  </Box>
+                )}
+                <CreateTaskAccordion
+                  featureId={featureId}
+                  projectId={projectId}
+                  userStoryId={userStoryId}
+                  setProject={setProject}
+                />
+              </Box>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

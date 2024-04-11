@@ -106,28 +106,36 @@ const CreateUserStoryAccordion = ({
 
   return (
     <Accordion allowToggle index={isOpen ? 0 : 1}>
-      <AccordionItem border="1px solid">
+      <AccordionItem border="none">
         {({ isExpanded }) => (
           <>
             <h2>
-              <AccordionButton onClick={() => setIsOpen(!isOpen)} h="56px">
+              <AccordionButton
+                onClick={() => setIsOpen(!isOpen)}
+                h="58px"
+                _hover={
+                  isExpanded
+                    ? {
+                        transform: "scale(1)",
+                      }
+                    : {
+                        transform: "scale(1.005)",
+                      }
+                }
+                borderBottomRadius={isExpanded ? "none" : "md"}
+                layerStyle="accordionButton"
+              >
                 {isExpanded ? (
-                  <MinusIcon fontSize="12px" />
+                  <MinusIcon fontSize="12px" color="#fffffe" />
                 ) : (
-                  <AddIcon fontSize="12px" />
+                  <AddIcon fontSize="12px" color="#fffffe" />
                 )}
-                <Box
-                  as="span"
-                  flex="1"
-                  textAlign="left"
-                  ml={3}
-                  layerStyle="text"
-                >
+                <Box as="span" flex="1" textAlign="left" ml={3} color="#fffffe">
                   Add a user story
                 </Box>
               </AccordionButton>
             </h2>
-            <AccordionPanel pb={4} borderTop="1px solid">
+            <AccordionPanel pb={4} layerStyle="accordionPanel">
               <FormControl isInvalid={isErrorName} isRequired mb={4}>
                 <FormLabel>User Story Name: </FormLabel>
                 <Input
@@ -151,7 +159,12 @@ const CreateUserStoryAccordion = ({
                   layerStyle="text"
                 />
               </FormControl>
-              <Button w="100%" size="lg" onClick={handleSubmit}>
+              <Button
+                w="100%"
+                size="lg"
+                onClick={handleSubmit}
+                variant="action-button"
+              >
                 Create User Story
               </Button>
             </AccordionPanel>

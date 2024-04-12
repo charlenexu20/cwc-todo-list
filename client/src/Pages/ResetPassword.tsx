@@ -79,8 +79,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Reset Your Password
       </Heading>
       <Box
@@ -119,7 +119,12 @@ const ResetPassword = () => {
           )}
         </FormControl>
 
-        <Button w="100%" size="lg" onClick={handleSubmit}>
+        <Button
+          w="100%"
+          size="lg"
+          onClick={handleSubmit}
+          variant="action-button"
+        >
           SUBMIT
         </Button>
       </Box>

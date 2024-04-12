@@ -187,6 +187,7 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         size="md"
         colorScheme="brand"
         color="#001858"
+        _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
         onClick={
           updateName
             ? () => {
@@ -201,6 +202,7 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         onClick={toggleTaskStatus}
         colorScheme="brand"
         color="#001858"
+        _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
         size="md"
       >
         {taskStatus}
@@ -212,6 +214,7 @@ const TaskBox = ({ task, setStoryStatus, setTaskList }: Props) => {
         size="md"
         colorScheme="brand"
         color="#001858"
+        _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
         onClick={deleteTask}
       />
     </Box>

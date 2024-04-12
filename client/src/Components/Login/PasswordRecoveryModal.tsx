@@ -104,7 +104,12 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
             />
           </Box>
         </ModalBody>
-        <Button w="100%" m={4} onClick={handleEmailSubmit}>
+        <Button
+          w="100%"
+          m={4}
+          onClick={handleEmailSubmit}
+          variant="action-button"
+        >
           SUBMIT
         </Button>
       </ModalContent>

@@ -200,7 +200,7 @@ const Project = () => {
               size="md"
               bgColor="transparent"
               color="#001858"
-              _hover={{ bgColor: "#fac2a5" }}
+              _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
               onClick={
                 updateProjectName
                   ? () => {
@@ -232,7 +232,7 @@ const Project = () => {
               size="md"
               bgColor="transparent"
               color="#001858"
-              _hover={{ bgColor: "#fac2a5" }}
+              _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
               onClick={
                 updateProjectDescription
                   ? () => {
@@ -243,7 +243,7 @@ const Project = () => {
             />
           </Box>
         </Box>
-        <Button onClick={onOpen} variant="action-button" size="md">
+        <Button onClick={onOpen} variant="delete-btn" size="md">
           Delete Project
         </Button>
       </Box>

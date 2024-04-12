@@ -8,14 +8,14 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "#fef6e4",
+        bg: "#FEFFF7",
       },
     },
   },
   colors: {
     brand: {
-      500: "#f3d2c1", // Active color
-      600: "#fac2a5", // Hover color
+      500: "#d8d0db", // Active color
+      600: "#aa96b1", // Hover color
     },
   },
   layerStyles: {
@@ -33,12 +33,12 @@ export const theme = extendTheme({
       _hover: {
         cursor: "pointer",
         transform: "scale(1.005)",
-        bgColor: "#faece6",
+        bgColor: "#F7FADB",
       },
       _active: { transform: "scale(1)" },
     },
     accordionButton: {
-      bgColor: "#d77372",
+      bgColor: "#AEA9DF",
       borderTopRadius: "md",
       _active: { transform: "scale(1)" },
     },
@@ -75,15 +75,31 @@ export const theme = extendTheme({
     Button: {
       variants: {
         "action-button": {
-          bgColor: "#f3d2c1",
+          bgColor: "#D8D0DB",
           color: "#001858",
-          _hover: { bgColor: "#fac2a5" },
-          // boxShadow: "0 0 2px 2px #efdfde",
+          _hover: { bgColor: "#AA96B1", color: "#FEFFF7" },
+        },
+        "delete-btn": {
+          bgColor: "#F7FADB",
+          color: "#aea9df",
+          _hover: { bgColor: "#f0f1ca ", color: "#AA96B1" },
         },
       },
       defaultProps: {
         size: "lg",
       },
     },
+
+    // IconButton: {
+    //   baseStyle: {
+    //     bgColor: "#d8d0db",
+    //     color: "#001858",
+    //   },
+    //   variants: {
+    //     "custom-btn": {
+    //       _hover: { bgColor: "#aa96b1", color: "#fffffe" },
+    //     },
+    //   },
+    // },
   },
 });

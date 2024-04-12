@@ -137,7 +137,7 @@ const UserDetailsRow = ({ field, value, username, setData }: Props) => {
         size="sm"
         color="#001858"
         colorScheme="brand"
-        _hover={{ bgColor: "#fac2a5", color: "#001858" }}
+        _hover={{ bgColor: "#aa96b1", color: "#FEFFF7" }}
         onClick={updateField ? handleCheckClick : handleEditClick}
       />
     </Box>

@@ -142,7 +142,12 @@ const LogIn = () => {
             />
 
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={handleShowClick}
+                variant="action-button"
+              >
                 {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
@@ -151,7 +156,12 @@ const LogIn = () => {
             <FormErrorMessage>Please enter a valid password.</FormErrorMessage>
           )}
         </FormControl>
-        <Button w="100%" size="lg" onClick={handleSubmit}>
+        <Button
+          w="100%"
+          size="lg"
+          onClick={handleSubmit}
+          variant="action-button"
+        >
           LOGIN
         </Button>
         <Box w="100%" display="flex" lineHeight="40px">

@@ -222,7 +222,7 @@ const FeatureModal = ({
                 size="md"
                 bgColor="transparent"
                 color="#001858"
-                _hover={{ bgColor: "#fac2a5" }}
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={
                   updateFeatureName
                     ? () => {
@@ -253,7 +253,7 @@ const FeatureModal = ({
                 size="md"
                 bgColor="transparent"
                 color="#001858"
-                _hover={{ bgColor: "#fac2a5" }}
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={
                   updateFeatureDescription
                     ? () => {
@@ -290,7 +290,7 @@ const FeatureModal = ({
           </Box>
         </Box>
 
-        <Button m={10} onClick={onOpenDelete} variant="action-button">
+        <Button m={10} onClick={onOpenDelete} variant="delete-btn">
           Delete Feature
         </Button>
       </ModalContent>

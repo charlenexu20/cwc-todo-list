@@ -77,7 +77,7 @@ const Profile = () => {
       <Box display="flex" gap={10} w="60%" py={20} m="0 auto">
         {/* User photo */}
         <Box display="flex" alignItems="center">
-          <Avatar bg="#f3d2c1" size="2xl" name={data.name} />
+          <Avatar bg="#f0f1ca" size="2xl" name={data.name} />
         </Box>
         {/* User account details */}
         <Box display="flex" flexDirection="column" w="100%" gap={4}>

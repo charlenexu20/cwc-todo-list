@@ -201,7 +201,7 @@ const UserStoryDetailsAccordion = ({
     <>
       {updateStoryName || startDelete ? (
         <Box
-          border="1px"
+          border="1px solid #172c66"
           display="flex"
           p={4}
           alignItems="center"
@@ -225,6 +225,7 @@ const UserStoryDetailsAccordion = ({
                 size="md"
                 colorScheme="brand"
                 color="#001858"
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={() => {
                   updateStory("name", storyName);
                 }}
@@ -242,6 +243,7 @@ const UserStoryDetailsAccordion = ({
                 size="md"
                 colorScheme="brand"
                 color="#001858"
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={onClickEditName}
               />
             </>
@@ -254,118 +256,131 @@ const UserStoryDetailsAccordion = ({
             size="md"
             colorScheme="brand"
             color="#001858"
+            _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
             onClick={onOpen}
           />
           <ChevronDownIcon boxSize={5} />
         </Box>
       ) : (
         <Accordion allowToggle>
-          <AccordionItem border="1px" borderRadius="md">
-            <h2>
-              <AccordionButton
-                display="flex"
-                justifyContent="space-between"
-                p={4}
-                h="58px"
-              >
-                <Text flex={1} textAlign="left">
-                  {name}
-                </Text>
-                <IconButton
-                  mr={4}
-                  aria-label="Edit Name"
-                  icon={<EditIcon />}
-                  size="md"
-                  colorScheme="brand"
-                  color="#001858"
-                  onClick={onClickEditName}
-                />
-                <Text mr={4}>{storyStatus}</Text>
-                <IconButton
-                  mr={4}
-                  aria-label="Delete User Story"
-                  icon={<DeleteIcon />}
-                  size="md"
-                  colorScheme="brand"
-                  color="#001858"
-                  onClick={() => {
-                    setStartDelete(true);
-                    onOpen();
-                  }}
-                />
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel borderTop="1px" p={0}>
-              <Box
-                display="flex"
-                px={4}
-                py={10}
-                alignItems="center"
-                borderBottom="1px"
-              >
-                {updateStoryDescription ? (
-                  <Box flex={1} mr={4}>
-                    <Textarea
-                      h="40px"
-                      value={storyDescription}
-                      onChange={onChangeDescription}
-                      layerStyle="text"
+          <AccordionItem border="1px solid #172c66" borderRadius="md">
+            {({ isExpanded }) => (
+              <>
+                <h2>
+                  <AccordionButton
+                    borderRadius="md"
+                    display="flex"
+                    justifyContent="space-between"
+                    p={4}
+                    h="58px"
+                    bgColor={isExpanded ? "#F7FADB" : "transparent"}
+                    _hover={{ bgColor: "#F7FADB" }}
+                  >
+                    <Text flex={1} textAlign="left">
+                      {name}
+                    </Text>
+                    <IconButton
+                      mr={4}
+                      aria-label="Edit Name"
+                      icon={<EditIcon />}
+                      size="md"
+                      colorScheme="brand"
+                      color="#001858"
+                      _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
+                      onClick={onClickEditName}
                     />
-                  </Box>
-                ) : (
-                  <Box flex={1} layerStyle="text">
-                    {description}
-                  </Box>
-                )}
-                <IconButton
-                  mr={4}
-                  aria-label="Edit Description"
-                  icon={updateStoryDescription ? <CheckIcon /> : <EditIcon />}
-                  size="md"
-                  colorScheme="brand"
-                  color="#001858"
-                  onClick={
-                    updateStoryDescription
-                      ? () => {
-                          updateStory("description", storyDescription);
-                        }
-                      : onClickEditDescription
-                  }
-                />
-              </Box>
-              <Box m={5} display="flex" flexDirection="column" gap={4}>
-                {taskList && taskList.length > 0 ? (
-                  taskList.map((task) => (
-                    <TaskBox
-                      task={task}
-                      setStoryStatus={setStoryStatus}
-                      setTaskList={setTaskList}
+                    <Text mr={4}>{storyStatus}</Text>
+                    <IconButton
+                      mr={4}
+                      aria-label="Delete User Story"
+                      icon={<DeleteIcon />}
+                      size="md"
+                      colorScheme="brand"
+                      color="#001858"
+                      _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
+                      onClick={() => {
+                        setStartDelete(true);
+                        onOpen();
+                      }}
                     />
-                  ))
-                ) : (
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel borderTop="1px" p={0}>
                   <Box
                     display="flex"
-                    justifyContent="center"
-                    border="1px solid #172c66"
-                    borderRadius="md"
-                    backgroundColor="#fffffe"
-                    boxShadow="md"
-                    alignItems="center"
                     px={4}
-                    py={4}
+                    py={10}
+                    alignItems="center"
+                    borderBottom="1px"
                   >
-                    <Text>No tasks available</Text>
+                    {updateStoryDescription ? (
+                      <Box flex={1} mr={4}>
+                        <Textarea
+                          h="40px"
+                          value={storyDescription}
+                          onChange={onChangeDescription}
+                          layerStyle="text"
+                        />
+                      </Box>
+                    ) : (
+                      <Box flex={1} layerStyle="text">
+                        {description}
+                      </Box>
+                    )}
+                    <IconButton
+                      mr={4}
+                      aria-label="Edit Description"
+                      icon={
+                        updateStoryDescription ? <CheckIcon /> : <EditIcon />
+                      }
+                      size="md"
+                      colorScheme="brand"
+                      color="#001858"
+                      _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
+                      onClick={
+                        updateStoryDescription
+                          ? () => {
+                              updateStory("description", storyDescription);
+                            }
+                          : onClickEditDescription
+                      }
+                    />
                   </Box>
-                )}
-                <CreateTaskAccordion
-                  featureId={featureId}
-                  projectId={projectId}
-                  userStoryId={userStoryId}
-                  setProject={setProject}
-                />
-              </Box>
-            </AccordionPanel>
+                  <Box m={5} display="flex" flexDirection="column" gap={4}>
+                    {taskList && taskList.length > 0 ? (
+                      taskList.map((task) => (
+                        <TaskBox
+                          task={task}
+                          setStoryStatus={setStoryStatus}
+                          setTaskList={setTaskList}
+                        />
+                      ))
+                    ) : (
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        border="1px solid #172c66"
+                        borderRadius="md"
+                        backgroundColor="#fffffe"
+                        boxShadow="md"
+                        alignItems="center"
+                        px={4}
+                        py={4}
+                      >
+                        <Text>No tasks available</Text>
+                      </Box>
+                    )}
+                    <CreateTaskAccordion
+                      featureId={featureId}
+                      projectId={projectId}
+                      userStoryId={userStoryId}
+                      setProject={setProject}
+                    />
+                  </Box>
+                </AccordionPanel>
+              </>
+            )}
           </AccordionItem>
         </Accordion>
       )}

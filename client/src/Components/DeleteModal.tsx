@@ -45,10 +45,9 @@ const DeleteModal = ({ isOpen, onClose, itemType, deleteItem }: Props) => {
           <Box mb={10}>
             <Text
               mb={10}
-              fontSize={20}
               textAlign="center"
             >{`Are you sure you want to delete this ${itemType}?`}</Text>
-            <Text textAlign="center" fontSize={20}>
+            <Text textAlign="center">
               You will be{" "}
               <Text as="span" fontWeight="bold">
                 permanently
@@ -56,7 +55,9 @@ const DeleteModal = ({ isOpen, onClose, itemType, deleteItem }: Props) => {
               deleting all associated {getAssociatedItems()}.
             </Text>
           </Box>
-          <Button onClick={deleteItem}>Delete {capitalizeItemType()}</Button>
+          <Button onClick={deleteItem} variant="action-button">
+            Delete {capitalizeItemType()}
+          </Button>
         </ModalContent>
       </Modal>
     </>

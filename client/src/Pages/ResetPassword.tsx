@@ -79,8 +79,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Reset Your Password
       </Heading>
       <Box
@@ -98,6 +98,7 @@ const ResetPassword = () => {
             size="lg"
             value={password}
             onChange={handlePasswordChange}
+            layerStyle="text"
           />
           {!isErrorPassword ? null : (
             <FormErrorMessage>This field is required</FormErrorMessage>
@@ -111,13 +112,19 @@ const ResetPassword = () => {
             size="lg"
             value={secondPassword}
             onChange={handlePSecondasswordChange}
+            layerStyle="text"
           />
           {!isErrorSecondPassword ? null : (
             <FormErrorMessage>Passwords must match</FormErrorMessage>
           )}
         </FormControl>
 
-        <Button w="100%" size="lg" onClick={handleSubmit}>
+        <Button
+          w="100%"
+          size="lg"
+          onClick={handleSubmit}
+          variant="action-button"
+        >
           SUBMIT
         </Button>
       </Box>

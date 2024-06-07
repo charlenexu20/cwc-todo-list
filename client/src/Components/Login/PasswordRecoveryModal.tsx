@@ -84,7 +84,7 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
     <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
       <ModalOverlay />
       <ModalContent px={20} py={12} alignItems="center">
-        <ModalHeader fontSize={26} mb={2}>
+        <ModalHeader fontSize={26} mb={2} layerStyle="heading">
           Password Recovery
         </ModalHeader>
         <ModalCloseButton />
@@ -100,10 +100,16 @@ const PasswordRecoveryModal = ({ isOpen, onClose }: Props) => {
               w="100%"
               onChange={handleEmailChange}
               isRequired
+              layerStyle="text"
             />
           </Box>
         </ModalBody>
-        <Button w="100%" m={4} onClick={handleEmailSubmit}>
+        <Button
+          w="100%"
+          m={4}
+          onClick={handleEmailSubmit}
+          variant="action-button"
+        >
           SUBMIT
         </Button>
       </ModalContent>

@@ -1,7 +1,8 @@
 import { Outlet, useLoaderData } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import { useState } from "react";
+import { theme } from "./theme";
 
 type Data = {
   name: string;
@@ -27,10 +28,8 @@ function App() {
     toggleLoggedIn,
   };
 
-  console.log("LOGGED IN: ", loggedIn);
-
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Header loggedIn={loggedIn} />
       <Outlet context={context} />
     </ChakraProvider>

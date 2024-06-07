@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Heading,
   IconButton,
   Input,
   Modal,
@@ -206,18 +207,22 @@ const FeatureModal = ({
                     value={name}
                     onChange={onChangeName}
                     type="text"
+                    layerStyle="text"
                   />
                 </Box>
               ) : (
-                <Text fontSize={20} mr={4}>
+                <Heading fontSize={28} mr={4}>
                   {featureName}
-                </Text>
+                </Heading>
               )}
               <IconButton
                 mr={4}
                 aria-label="Edit Name"
                 icon={updateFeatureName ? <CheckIcon /> : <EditIcon />}
                 size="md"
+                bgColor="transparent"
+                color="#001858"
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={
                   updateFeatureName
                     ? () => {
@@ -235,6 +240,7 @@ const FeatureModal = ({
                     h="40px"
                     value={description}
                     onChange={onChangeDescription}
+                    layerStyle="text"
                   />
                 </Box>
               ) : (
@@ -245,6 +251,9 @@ const FeatureModal = ({
                 aria-label="Edit Description"
                 icon={updateFeatureDescription ? <CheckIcon /> : <EditIcon />}
                 size="md"
+                bgColor="transparent"
+                color="#001858"
+                _hover={{ bgColor: "#aa96b1", color: "#fffffe" }}
                 onClick={
                   updateFeatureDescription
                     ? () => {
@@ -281,7 +290,7 @@ const FeatureModal = ({
           </Box>
         </Box>
 
-        <Button m={10} onClick={onOpenDelete}>
+        <Button m={10} onClick={onOpenDelete} variant="delete-btn">
           Delete Feature
         </Button>
       </ModalContent>

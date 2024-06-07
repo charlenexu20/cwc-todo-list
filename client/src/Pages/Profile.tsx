@@ -67,17 +67,17 @@ const Profile = () => {
   };
 
   return (
-    <Box>
-      <Heading textAlign="center" mb={4}>
+    <Box mt={20}>
+      <Heading textAlign="center" mb={4} fontSize={28}>
         Account Details
       </Heading>
       <Text textAlign="center">
-        Hello, {data.name}! You can manage your account details.
+        Hello, {data.name}! You can manage your account details here.
       </Text>
-      <Box display="flex" gap={20} w="60%" py={20} m="0 auto">
+      <Box display="flex" gap={10} w="60%" py={20} m="0 auto">
         {/* User photo */}
         <Box display="flex" alignItems="center">
-          <Avatar bg="blue.200" size="2xl" name={data.name} />
+          <Avatar bg="#f0f1ca" size="2xl" name={data.name} />
         </Box>
         {/* User account details */}
         <Box display="flex" flexDirection="column" w="100%" gap={4}>
@@ -108,10 +108,10 @@ const Profile = () => {
         </Box>
       </Box>
       <Box display="flex" gap={4} justifyContent="center">
-        <Button onClick={logOut} size="lg">
+        <Button onClick={logOut} size="lg" variant="action-button">
           Logout
         </Button>
-        <Button onClick={deleteAccount} size="lg">
+        <Button onClick={deleteAccount} size="lg" variant="action-button">
           Delete Account
         </Button>
       </Box>
